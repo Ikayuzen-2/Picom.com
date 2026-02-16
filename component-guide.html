@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Guide - PiCom.com</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="Index.html" class="logo-link">
+            <img src="logo.jpg" alt="PiCom Symbol" class="logo-symbol-img">
+            <span class="logo-text">PiCom.com</span>
+        </a>
+        <div class="search-box">
+            <input type="text" placeholder="Search parts..." class="search-input">
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+            </span> 
+        </div>
+        <div class="nav-links" id="mobile-menu">
+            <a href="#" class="nav-item">Compare</a>
+            <a href="component-guide.html" class="nav-item" style="color: #007aff; font-weight: 600;">Component Guide</a>
+            <a href="rankings.html" class="nav-item">Rankings</a>
+            <a href="community.html" class="nav-item">Community</a>
+            <a href="admin.html" class="nav-item" id="nav-admin-link" style="display: none; background-color: #fffbe6; color: #b08a00; font-weight: 600;">Admin</a>
+            <a href="login.html" class="nav-item login-btn" id="nav-login-link" style="display: none;">Login</a>
+            <div class="profile-container" id="nav-profile-ui">
+                <a href="profile.html" class="profile-link">
+                    <span class="profile-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                    </span>
+                    <span class="profile-nickname" id="profile-nickname-text">User</span> 
+                </a>
+                <a href="#" class="nav-item" id="nav-logout-link">Logout</a>
+            </div>
+        </div>
+        <button class="hamburger-btn" id="hamburger-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg></button>
+    </nav>
+
+    <div class="container">
+        <div class="main-ai-section" style="padding: 20px 0; margin-bottom: 40px;">
+            <h1>PC Component Guide</h1>
+            <p class="subtitle">Select a component to view its guide.</p>
+        </div>
+
+        <div class="guide-grid" id="component-grid">
+            <a href="guide-cpu.html" class="guide-button">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15 4a1 1 0 1 0 0 2V4zM9 4a1 1 0 1 0 0 2V4zm-2 0a1 1 0 1 0 0 2V4zm10 0a1 1 0 1 0 0 2V4zM4 9a1 1 0 1 0 2 0H4zm0 2a1 1 0 1 0 2 0H4zm0-4a1 1 0 1 0 2 0H4zm0 10a1 1 0 1 0 2 0H4zm0 2a1 1 0 1 0 2 0H4zm0-4a1 1 0 1 0 2 0H4zm16-6a1 1 0 1 0-2 0h2zm0 2a1 1 0 1 0-2 0h2zm0-4a1 1 0 1 0-2 0h2zm0 10a1 1 0 1 0-2 0h2zm0 2a1 1 0 1 0-2 0h2zm0-4a1 1 0 1 0-2 0h2zM9 20a1 1 0 1 0 0-2v2zm2 0a1 1 0 1 0 0-2v2zm-4 0a1 1 0 1 0 0-2v2zm10 0a1 1 0 1 0 0-2v2zm2 0a1 1 0 1 0 0-2v2zm-4 0a1 1 0 1 0 0-2v2zM7 4V2h2v2H7zm4 0V2h2v2h-2zm4 0V2h2v2h-2zM4 7H2v2h2V7zm0 4H2v2h2v-2zm0 4H2v2h2v-2zM20 7h2v2h-2V7zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2zM7 20v2h2v-2H7zm4 0v2h2v-2h-2zm4 0v2h2v-2h-2zM6 6h12v12H6V6z"/></svg>
+                <span>CPU</span>
+            </a>
+            <a href="guide-motherboard.html" class="guide-button">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5zm2 0v14h16V5H4zm4 3a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm4-8a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm4-8a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg>
+                <span>Motherboard</span>
+            </a>
+            <a href="guide-ram.html" class="guide-button">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5zm2 1v9h14V6H5zm2 12a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm4 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm4 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm4 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM7 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm4 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm4 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm4 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
+                <span>RAM</span>
+            </a>
+            <a href="guide-gpu.html" class="guide-button">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM4 9h16v9H4V9zm3 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-9-7h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"/></svg>
+                <span>GPU</span>
+            </a>
+            <a href="guide-storage.html" class="guide-button">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zm0 2h14v14H5V5zm3 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM6 8a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm10-4a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm0 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg>
+                <span>Storage</span>
+            </a>
+            <a href="guide-psu.html" class="guide-button">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                <span>Power Supply</span>
+            </a>
+            <a href="guide-case.html" class="guide-button">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4zm2 0v16h12V4H6zm3 3h6a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2zm0 4h6a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2z"/></svg>
+                <span>Case</span>
+            </a>
+            <a href="guide-cooler.html" class="guide-button">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm0-14a6 6 0 1 0 6 6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4z"/></svg>
+                <span>Cooler</span>
+            </a>
+            <a href="guide-monitor.html" class="guide-button hidden-item">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 4H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h7v2H8a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-2v-2h7a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1zM4 16V6h16v10H4z"/></svg>
+                <span>Monitor</span>
+            </a>
+            <a href="guide-mouse.html" class="guide-button hidden-item">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 0-5 5v10a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5zm3 15a3 3 0 0 1-6 0V7a3 3 0 0 1 6 0v10zm-4-8V6a1 1 0 0 1 2 0v3a1 1 0 0 1-2 0z"/></svg>
+                <span>Mouse</span>
+            </a>
+            <a href="guide-webcam.html" class="guide-button hidden-item">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm0 4c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/></svg>
+                <span>Webcam</span>
+            </a>
+            <a href="guide-keyboard.html" class="guide-button hidden-item">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H3zm0 2h18v10H3V7zm2 2h2v2H5V9zm4 0h2v2H9V9zm4 0h2v2h-2V9zm4 0h2v2h-2V9zM5 13h2v2H5v-2zm4 0h2v2H9v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z"/></svg>
+                <span>Keyboard</span>
+            </a>
+            <a href="guide-headset.html" class="guide-button hidden-item">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a9 9 0 0 0-9 9v7a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2H5v-1a7 7 0 0 1 14 0v1h-2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-7a9 9 0 0 0-9-9z"/></svg>
+                <span>Headset</span>
+            </a>
+            <a href="guide-mic.html" class="guide-button hidden-item">
+                <svg class="guide-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3zm0 12a5 5 0 0 1-5-5v-1h2v1a3 3 0 0 0 6 0v-1h2v1a5 5 0 0 1-5 5zm-1 2v3h2v-3a7 7 0 0 0 6-7v-1h-2v1a5 5 0 0 1-10 0v-1H5v1a7 7 0 0 0 6 7z"/></svg>
+                <span>Mic</span>
+            </a>
+        </div>
+
+        <div class="toggle-btn-container" id="more-btn-container">
+            <button class="guide-button toggle-btn" id="more-trigger-btn" style="display: inline-flex; min-width: 120px;">more</button>
+        </div>
+
+        <div class="toggle-btn-container" id="less-btn-container">
+            <button class="guide-button toggle-btn" id="less-trigger-btn" style="display: inline-flex; min-width: 120px;">less</button>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; margin-bottom: 60px;">
+            <a href="Index.html" class="form-button" style="width: auto; display: inline-flex; align-items: center; gap: 8px; background-color: #007aff; text-decoration: none;">
+                ← Back to Main
+            </a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 PiCom.com. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script> 
+    
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAb74jmnCVbPFQXY7_O6dZlV5UQDYjJzvk",
+        authDomain: "picom-b7b8e.firebaseapp.com",
+        projectId: "picom-b7b8e",
+        storageBucket: "picom-b7b8e.firebasestorage.app",
+        messagingSenderId: "399167423195",
+        appId: "1:399167423195:web:b2be3394bdac5e38fb02fe"
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" class="protected-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - PiCom.com</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <style>
+        /* 탭 버튼 스타일 */
+        .admin-tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .admin-tab-btn {
+            flex: 1;
+            padding: 15px;
+            background-color: #f0f2f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .admin-tab-btn:hover {
+            background-color: #e4e6eb;
+        }
+        .admin-tab-btn.active {
+            background-color: #007aff;
+            color: white;
+            border-color: #007aff;
+        }
+        
+        /* 섹션 표시/숨김 애니메이션 */
+        .admin-section-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .admin-section-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pending Reports 필터 메뉴 스타일 */
+        .report-header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .report-filter-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .filter-menu-btn {
+            background: none;
+            border: none;
+            font-size: 1.8em;
+            cursor: pointer;
+            color: #555;
+            padding: 5px;
+            line-height: 1;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .filter-menu-btn:hover {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+        
+        /* 드롭다운 메뉴 */
+        .filter-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #ffffff;
+            min-width: 240px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            border: 1px solid #eee;
+            z-index: 10;
+            overflow: hidden;
+        }
+        .report-filter-menu:hover .filter-dropdown-content {
+            display: block;
+        }
+        .filter-dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.95em;
+            border-bottom: 1px solid #f9f9f9;
+            transition: background-color 0.2s;
+            cursor: pointer; /* 링크가 아니라 버튼 역할이므로 커서 지정 */
+        }
+        .filter-dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        .filter-dropdown-content a:hover {
+            background-color: #f5f5f7;
+            color: #007aff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="Index.html" class="logo-link">
+            <img src="logo.jpg" alt="PiCom Symbol" class="logo-symbol-img">
+            <span class="logo-text">PiCom.com</span>
+        </a>
+        
+        <div class="search-box">
+            <input type="text" placeholder="Search parts, features, errors, etc." class="search-input">
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+            </span> 
+        </div>
+
+        <div class="nav-links" id="mobile-menu">
+            <a href="#" class="nav-item">Compare</a>
+            <a href="component-guide.html" class="nav-item">Component Guide</a>
+            <a href="rankings.html" class="nav-item">Rankings</a>
+            <a href="community.html" class="nav-item">Community</a>
+            <a href="admin.html" class="nav-item" id="nav-admin-link" style="display: none; background-color: #fffbe6; color: #b08a00; font-weight: 600;">Admin</a>
+            
+            <a href="login.html" class="nav-item login-btn" id="nav-login-link" style="display: none;">Login</a>
+
+            <div class="profile-container" id="nav-profile-ui">
+                <a href="profile.html" class="profile-link">
+                    <span class="profile-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                    </span>
+                    <span class="profile-nickname" id="profile-nickname-text">User</span> 
+                </a>
+                <a href="#" class="nav-item" id="nav-logout-link">Logout</a>
+            </div>
+        </div>
+
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
+    </nav>
+
+    <div class="container" style="max-width: 100%; padding: 0 40px;">
+        <h1 class="page-title">Admin Dashboard</h1>
+
+        <div class="admin-tab-buttons">
+            <button class="admin-tab-btn active" onclick="switchAdminTab('popup')">📢 Popup Manager</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('reports')">🚨 Reports Manager</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('empty')">✨ Empty Slot</button>
+        </div>
+
+        <div id="section-popup" class="admin-section-content active">
+            <div class="admin-section" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                
+                <div class="report-header-wrapper">
+                    <div>
+                        <h2 style="margin-top: 0; margin-bottom: 5px;">📢 Global Popup Manager</h2>
+                        <p style="color: #666; margin: 0;">Manage and Design your site popup.</p>
+                    </div>
+                    
+                    <div class="report-filter-menu">
+                        <button class="filter-menu-btn" style="font-size: 2em;">≡</button>
+                        <div class="filter-dropdown-content">
+                            <a id="menu-popup-all">all your popup</a>
+                            <a id="menu-popup-make">make your popup</a>
+                            <a id="menu-popup-post">post your popup</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="popup-views-wrapper" style="margin-top: 20px;">
+                    
+                    <div id="view-popup-all" class="popup-view-content" style="display: none;">
+                        <h3 style="margin-top: 0; margin-bottom: 15px;">📂 Saved Popups</h3>
+                        <div class="admin-table-container" id="saved-popups-container">
+                            <p style="text-align: center; color: #888; padding: 40px;">No popups saved yet.</p>
+                        </div>
+                    </div>
+
+                    <div id="view-popup-make" class="popup-view-content" style="display: none;">
+                        <div class="popup-editor-container">
+                            <div class="editor-toolbar">
+                                <div class="toolbar-group">
+                                    <button id="btn-add-text" class="toolbar-btn" title="Add Text Box">📝 Text</button>
+                                    <label for="img-upload-input" class="toolbar-btn" title="Add Image">📷 Image</label>
+                                    <input type="file" id="img-upload-input" accept="image/*" style="display:none">
+                                </div>
+        
+                                <div class="toolbar-separator"></div>
+        
+                                <div class="toolbar-group">
+                                    <select id="font-family-select" class="toolbar-select" title="Font Family">
+                                        <option value="Arial, sans-serif">Arial</option>
+                                        <option value="'Times New Roman', serif">Times New Roman</option>
+                                        <option value="Verdana, sans-serif">Verdana</option>
+                                        <option value="Impact, sans-serif">Impact</option>
+                                    </select>
+                                    <input type="number" id="font-size-input" class="toolbar-input" value="16" min="10" max="100" title="Font Size">
+                                    
+                                    <div class="color-wrapper" title="Text Color">
+                                        <span style="font-size:0.8em;">A</span>
+                                        <input type="color" id="font-color-input" class="toolbar-color" value="#000000">
+                                    </div>
+                                    
+                                    <div class="color-wrapper" title="Background Color">
+                                        <span style="font-size:0.8em;">BG</span>
+                                        <input type="color" id="bg-color-input" class="toolbar-color" value="#ffffff">
+                                    </div>
+                                </div>
+        
+                                <div class="toolbar-separator"></div>
+        
+                                <div class="toolbar-group">
+                                    <button id="btn-delete-item" class="toolbar-btn delete-btn" title="Delete Selected">🗑️</button>
+                                    <button id="btn-editor-clear" class="toolbar-btn delete-btn" title="Clear All Items">🧹</button>
+                                </div>
+                                
+                                <div style="flex-grow: 1;"></div>
+                                <button id="btn-save-canvas" class="form-button" style="width: auto; padding: 8px 15px;">💾 Save</button>
+                            </div>
+        
+                            <div class="editor-canvas-wrapper">
+                                <div id="popup-canvas" class="editor-canvas">
+                                    <div class="canvas-placeholder">Drag & Drop Area</div>
+                                </div>
+                            </div>
+
+                            <div style="padding: 15px; border-top: 1px solid #ddd; background: #fff; display: flex; align-items: center; gap: 10px;">
+                                <label for="popup-link-url" style="font-weight: 600; color: #555;">🔗 Link URL:</label>
+                                <input type="text" id="popup-link-url" placeholder="https://example.com (Optional)" style="flex-grow: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 30px; text-align: center;">
+                            <button id="btn-back-to-popup-list" class="form-button" style="width: auto; display: inline-block;">← Back to Menu</button>
+                        </div>
+                    </div>
+
+                    <div id="view-popup-post" class="popup-view-content" style="text-align: center; padding: 40px; background: #f9f9f9; border-radius: 8px; display: none;">
+                        <h3>🚀 Post Your Popup</h3>
+                        <p style="color:#888;">Select a saved popup to publish.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+
+        <div id="section-reports" class="admin-section-content">
+            <div class="admin-section" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                
+                <div class="report-header-wrapper">
+                    <div>
+                        <h2 id="report-section-title" style="margin-top: 0; margin-bottom: 5px;">🚨 Pending Reports</h2>
+                        <p style="color: #666; margin: 0;">Review and manage reported posts and comments.</p>
+                    </div>
+                    
+                    <div class="report-filter-menu">
+                        <button class="filter-menu-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" style="display: block;">
+                                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                        </button>
+                        <div class="filter-dropdown-content">
+                            <a id="btn-filter-pending">All Pending Reports</a>
+                            <a id="btn-filter-complete">Report marked as complete</a>
+                            <a id="btn-filter-deleted">Deleted reports</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-table-container" id="admin-reports-container">
+                    <p>Loading reports...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-empty" class="admin-section-content">
+            <div class="admin-section" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+                <h2 style="color: #ccc;">Empty Section</h2>
+                <p style="color: #aaa;">This slot is reserved for future features.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 PiCom.com. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script> 
+    
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAb74jmnCVbPFQXY7_O6dZlV5UQDYjJzvk",
+        authDomain: "picom-b7b8e.firebaseapp.com",
+        projectId: "picom-b7b8e",
+        storageBucket: "picom-b7b8e.firebasestorage.app",
+        messagingSenderId: "399167423195",
+        appId: "1:399167423195:web:b2be3394bdac5e38fb02fe"
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <script src="script.js"></script> 
+
+    <script>
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-section-content').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const targetSection = document.getElementById('section-' + tabName);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
