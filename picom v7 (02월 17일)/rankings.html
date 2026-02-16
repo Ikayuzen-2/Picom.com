@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware Rankings - PiCom.com</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* --- Rankings Specific Styles --- */
+        
+        /* 1. Layout (Sidebar + Content) - profile.html 스타일 참고 */
+        .ranking-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        /* 2. Sidebar Navigation */
+        .ranking-sidebar .ranking-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid #eee;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 100px; /* 스크롤 시 고정 */
+        }
+        .ranking-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 500;
+            color: #555;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .ranking-nav-link:hover {
+            background-color: #f5f5f7;
+            color: #000;
+        }
+        .ranking-nav-link.active {
+            background-color: #eef5ff;
+            color: #007aff;
+            font-weight: 700;
+        }
+
+        /* 3. Main Content Header & Tabs */
+        .ranking-header-area {
+            margin-bottom: 30px;
+        }
+        .ranking-title {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1c1c1c;
+        }
+        
+        /* 3-Type Filter Tabs (Performance / Popularity / Overall) */
+        .rank-type-tabs {
+            display: flex;
+            gap: 10px;
+            background: #f0f2f5;
+            padding: 5px;
+            border-radius: 12px;
+            display: inline-flex; /* 콘텐츠 너비에 맞춤 */
+        }
+        .rank-type-btn {
+            padding: 10px 24px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .rank-type-btn.active {
+            background: #ffffff;
+            color: #007aff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        /* 각 타입별 활성 컬러 포인트 */
+        .rank-type-btn[data-type="performance"].active { color: #ff3b30; } /* Red */
+        .rank-type-btn[data-type="popularity"].active { color: #007aff; } /* Blue */
+        .rank-type-btn[data-type="overall"].active { color: #8e44ad; } /* Purple */
+
+        /* 4. Ranking Cards Styling */
+        .ranking-list-container {
+            display: none; /* JS로 활성화된 탭만 보여줌 */
+            animation: fadeIn 0.4s ease;
+        }
+        .ranking-list-container.active {
+            display: block;
+        }
+
+        /* 1위 강조 카드 (Top Ranker) */
+        .top-rank-card {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f9fcff 100%);
+            border: 2px solid #007aff; /* 1위 테두리 강조 */
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.15);
+            overflow: hidden;
+        }
+        .top-rank-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #007aff;
+            color: white;
+            padding: 8px 20px;
+            border-bottom-right-radius: 16px;
+            font-weight: 800;
+            font-size: 1.1em;
+            z-index: 1;
+        }
+        /* 타입별 1위 카드 테두리/배지 색상 변경 */
+        .top-rank-card.perf { border-color: #ff3b30; }
+        .top-rank-card.perf .top-rank-badge { background: #ff3b30; }
+        .top-rank-card.pop { border-color: #007aff; }
+        .top-rank-card.pop .top-rank-badge { background: #007aff; }
+        .top-rank-card.all { border-color: #8e44ad; }
+        .top-rank-card.all .top-rank-badge { background: #8e44ad; }
+
+        .top-rank-img {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            margin-right: 40px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+        }
+        .top-rank-info h3 {
+            font-size: 1.8em;
+            margin: 0 0 10px 0;
+            color: #1c1c1c;
+        }
+        .rank-score-box {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        .rank-score-box strong {
+            color: #333;
+            font-size: 1.1em;
+        }
+        .top-rank-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* 2위~5위 리스트 아이템 */
+        .rank-list-item {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 15px 25px;
+            margin-bottom: 12px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .rank-list-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-color: #ddd;
+        }
+        .rank-num-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 20px;
+            font-size: 1.1em;
+            flex-shrink: 0;
+        }
+        /* 메달 색상 */
+        .rank-num-circle.rank-2 { background: #e0e0e0; color: #555; border: 2px solid #ccc; } /* Silver */
+        .rank-num-circle.rank-3 { background: #ffedd0; color: #a05a2c; border: 2px solid #e6b98d; } /* Bronze */
+
+        .rank-item-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-right: 20px;
+            border-radius: 6px;
+            background: #fff;
+        }
+        .rank-item-info {
+            flex-grow: 1;
+        }
+        .rank-item-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #1c1c1c;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .rank-item-spec {
+            font-size: 0.9em;
+            color: #888;
+        }
+        .rank-item-score {
+            font-weight: 700;
+            color: #007aff;
+            font-size: 1.1em;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 800px) {
+            .ranking-layout {
+                grid-template-columns: 1fr; /* 사이드바 위로 이동 */
+                gap: 20px;
+            }
+            .ranking-sidebar .ranking-nav {
+                flex-direction: row;
+                overflow-x: auto;
+                padding: 10px;
+                position: static;
+            }
+            .ranking-nav-link {
+                white-space: nowrap;
+                padding: 8px 14px;
+                font-size: 0.9em;
+            }
+            .top-rank-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            .top-rank-img {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            .rank-type-tabs {
+                width: 100%;
+                box-sizing: border-box;
+                justify-content: space-between;
+            }
+            .rank-type-btn {
+                padding: 10px 15px;
+                flex-grow: 1;
+                font-size: 0.9em;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation (Copied from Index.html for consistency) -->
+    <nav class="top-nav">
+        <a href="Index.html" class="logo-link">
+            <img src="logo.jpg" alt="PiCom Symbol" class="logo-symbol-img">
+            <span class="logo-text">PiCom.com</span>
+        </a>
+        
+        <div class="search-box">
+            <input type="text" placeholder="Search parts, features, errors, etc." class="search-input">
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+            </span> 
+        </div>
+
+        <div class="nav-links" id="mobile-menu">
+            <a href="#" class="nav-item">Compare</a>
+            <a href="component-guide.html" class="nav-item">Component Guide</a>
+            <a href="rankings.html" class="nav-item" style="color: #007aff; font-weight: 600;">Rankings</a>
+            <a href="community.html" class="nav-item">Community</a>
+            <a href="admin.html" class="nav-item" id="nav-admin-link" style="display: none; background-color: #fffbe6; color: #b08a00; font-weight: 600;">Admin</a>
+            
+            <a href="login.html" class="nav-item login-btn" id="nav-login-link" style="display: none;">Login</a>
+
+            <div class="profile-container" id="nav-profile-ui">
+                <a href="profile.html" class="profile-link">
+                    <span class="profile-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                    </span>
+                    <span class="profile-nickname" id="profile-nickname-text">User</span> 
+                </a>
+                <a href="#" class="nav-item" id="nav-logout-link">Logout</a>
+            </div>
+        </div>
+
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title" style="margin-bottom: 10px;">Component Rankings</h1>
+        <p class="subtitle">Updated weekly based on benchmarks, sales data, and community votes.</p>
+
+        <div class="ranking-layout">
+            
+            <!-- Sidebar: Component Selection -->
+            <aside class="ranking-sidebar">
+                <nav class="ranking-nav">
+                    <!-- Default Active: CPU -->
+                    <a href="#" class="ranking-nav-link active" data-component="cpu">
+                        <span>CPU</span> <span>🖥️</span>
+                    </a>
+                    <a href="#" class="ranking-nav-link" data-component="gpu">
+                        <span>GPU</span> <span>🎮</span>
+                    </a>
+                    <a href="#" class="ranking-nav-link" data-component="ram">
+                        <span>RAM</span> <span>💾</span>
+                    </a>
+                    <a href="#" class="ranking-nav-link" data-component="ssd">
+                        <span>SSD / Storage</span> <span>💿</span>
+                    </a>
+                    <a href="#" class="ranking-nav-link" data-component="mb">
+                        <span>Motherboard</span> <span>🔌</span>
+                    </a>
+                    <a href="#" class="ranking-nav-link" data-component="cooler">
+                        <span>Cooler</span> <span>❄️</span>
+                    </a>
+                    <a href="#" class="ranking-nav-link" data-component="psu">
+                        <span>Power Supply</span> <span>⚡</span>
+                    </a>
+                    <a href="#" class="ranking-nav-link" data-component="case">
+                        <span>Case</span> <span>📦</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Content: Ranking Lists -->
+            <main class="ranking-content">
+                
+                <div class="ranking-header-area">
+                    <h2 class="ranking-title" id="current-component-title">CPU Rankings</h2>
+                    
+                    <!-- 3-Way Filter Tabs -->
+                    <div class="rank-type-tabs">
+                        <button class="rank-type-btn active" data-type="performance" onclick="switchRankType('performance')">
+                            🚀 Performance
+                        </button>
+                        <button class="rank-type-btn" data-type="popularity" onclick="switchRankType('popularity')">
+                            🔥 Popularity
+                        </button>
+                        <button class="rank-type-btn" data-type="overall" onclick="switchRankType('overall')">
+                            ⚖️ Overall
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 1. Performance Ranking Container -->
+                <div id="rank-performance" class="ranking-list-container active">
+                    
+                    <!-- 1st Place Card -->
+                    <div class="top-rank-card perf">
+                        <div class="top-rank-badge">#1 Performance King</div>
+                        <img src="cpu_1.jpg" alt="Rank 1 Product" class="top-rank-img" id="perf-img-1">
+                        <div class="top-rank-info">
+                            <h3 id="perf-name-1">Intel Core i9-14900K</h3>
+                            <div class="rank-score-box">Benchmark Score: <strong id="perf-score-1">62,500</strong></div>
+                            <p class="top-rank-desc" id="perf-desc-1">
+                                The absolute fastest consumer CPU for multitasking and heavy rendering loads. 
+                                Handles any game and stream simultaneously without breaking a sweat.
+                            </p>
+                            <button class="form-button" style="width:auto; padding: 10px 20px;">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- 2nd - 5th List -->
+                    <div class="rank-list">
+                        <div class="rank-list-item">
+                            <div class="rank-num-circle rank-2">2</div>
+                            <img src="cpu_2.png" class="rank-item-img" alt="CPU">
+                            <div class="rank-item-info">
+                                <span class="rank-item-name">AMD Ryzen 9 7950X3D</span>
+                                <span class="rank-item-spec">16 Cores / 32 Threads</span>
+                            </div>
+                            <span class="rank-item-score">60,100 pts</span>
+                        </div>
+                        <div class="rank-list-item">
+                            <div class="rank-num-circle rank-3">3</div>
+                            <div class="rank-item-placeholder rank-item-img" style="background:#eee; display:flex; align-items:center; justify-content:center;">CPU</div>
+                            <div class="rank-item-info">
+                                <span class="rank-item-name">Intel Core i7-14700K</span>
+                                <span class="rank-item-spec">20 Cores / 28 Threads</span>
+                            </div>
+                            <span class="rank-item-score">58,200 pts</span>
+                        </div>
+                        <div class="rank-list-item">
+                            <div class="rank-num-circle">4</div>
+                            <div class="rank-item-placeholder rank-item-img" style="background:#eee; display:flex; align-items:center; justify-content:center;">CPU</div>
+                            <div class="rank-item-info">
+                                <span class="rank-item-name">AMD Ryzen 9 7900X</span>
+                                <span class="rank-item-spec">12 Cores / 24 Threads</span>
+                            </div>
+                            <span class="rank-item-score">52,400 pts</span>
+                        </div>
+                        <div class="rank-list-item">
+                            <div class="rank-num-circle">5</div>
+                            <div class="rank-item-placeholder rank-item-img" style="background:#eee; display:flex; align-items:center; justify-content:center;">CPU</div>
+                            <div class="rank-item-info">
+                                <span class="rank-item-name">Intel Core i5-14600K</span>
+                                <span class="rank-item-spec">14 Cores / 20 Threads</span>
+                            </div>
+                            <span class="rank-item-score">45,100 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Popularity Ranking Container -->
+                <div id="rank-popularity" class="ranking-list-container">
+                    
+                    <div class="top-rank-card pop">
+                        <div class="top-rank-badge">#1 Best Seller</div>
+                        <img src="cpu_2.png" alt="Rank 1 Product" class="top-rank-img">
+                        <div class="top-rank-info">
+                            <h3>AMD Ryzen 7 7800X3D</h3>
+                            <div class="rank-score-box">Sales Volume: <strong>High</strong></div>
+                            <p class="top-rank-desc">
+                                The undisputed king of gaming CPUs. Gamers love it because it beats more expensive 
+                                Intel chips in gaming performance while consuming far less power.
+                            </p>
+                            <button class="form-button" style="width:auto; padding: 10px 20px;">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="rank-list">
+                        <div class="rank-list-item">
+                            <div class="rank-num-circle rank-2">2</div>
+                            <img src="cpu_1.jpg" class="rank-item-img" alt="CPU">
+                            <div class="rank-item-info">
+                                <span class="rank-item-name">Intel Core i5-13600K</span>
+                                <span class="rank-item-spec">Best All-Rounder</span>
+                            </div>
+                            <span class="rank-item-score">Very High</span>
+                        </div>
+                        <div class="rank-list-item">
+                            <div class="rank-num-circle rank-3">3</div>
+                            <div class="rank-item-placeholder rank-item-img" style="background:#eee; display:flex; align-items:center; justify-content:center;">CPU</div>
+                            <div class="rank-item-info">
+                                <span class="rank-item-name">AMD Ryzen 5 7600</span>
+                                <span class="rank-item-spec">Budget Gaming King</span>
+                            </div>
+                            <span class="rank-item-score">High</span>
+                        </div>
+                        <!-- More items... -->
+                    </div>
+                </div>
+
+                <!-- 3. Overall Ranking Container -->
+                <div id="rank-overall" class="ranking-list-container">
+                    
+                    <div class="top-rank-card all">
+                        <div class="top-rank-badge">#1 Editor's Choice</div>
+                        <img src="cpu_1.jpg" alt="Rank 1 Product" class="top-rank-img">
+                        <div class="top-rank-info">
+                            <h3>Intel Core i5-14600K</h3>
+                            <div class="rank-score-box">PiCom Score: <strong>9.8/10</strong></div>
+                            <p class="top-rank-desc">
+                                Balancing price, gaming performance, and productivity perfectly. 
+                                It's not the fastest, but for the price, it offers the best value for 90% of users.
+                            </p>
+                            <button class="form-button" style="width:auto; padding: 10px 20px;">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="rank-list">
+                        <div class="rank-list-item">
+                            <div class="rank-num-circle rank-2">2</div>
+                            <img src="cpu_2.png" class="rank-item-img" alt="CPU">
+                            <div class="rank-item-info">
+                                <span class="rank-item-name">AMD Ryzen 7 7800X3D</span>
+                                <span class="rank-item-spec">Pure Gaming Focus</span>
+                            </div>
+                            <span class="rank-item-score">9.7/10</span>
+                        </div>
+                        <div class="rank-list-item">
+                            <div class="rank-num-circle rank-3">3</div>
+                            <div class="rank-item-placeholder rank-item-img" style="background:#eee; display:flex; align-items:center; justify-content:center;">CPU</div>
+                            <div class="rank-item-info">
+                                <span class="rank-item-name">Intel Core i7-14700K</span>
+                                <span class="rank-item-spec">High-End Multitasker</span>
+                            </div>
+                            <span class="rank-item-score">9.5/10</span>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 PiCom.com. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script> 
+    
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAb74jmnCVbPFQXY7_O6dZlV5UQDYjJzvk",
+        authDomain: "picom-b7b8e.firebaseapp.com",
+        projectId: "picom-b7b8e",
+        storageBucket: "picom-b7b8e.firebasestorage.app",
+        messagingSenderId: "399167423195",
+        appId: "1:399167423195:web:b2be3394bdac5e38fb02fe"
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <script src="script.js"></script>
+
+    <!-- Page Specific Script for Ranking Logic -->
+    <script>
+        // 1. Switch Rank Type (Performance / Popularity / Overall)
+        function switchRankType(type) {
+            // Update Buttons
+            document.querySelectorAll('.rank-type-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.dataset.type === type) btn.classList.add('active');
+            });
+
+            // Update Content Containers
+            document.querySelectorAll('.ranking-list-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.getElementById('rank-' + type).classList.add('active');
+        }
+
+        // 2. Handle Sidebar Component Selection (Simulated Data Update)
+        document.querySelectorAll('.ranking-nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Active State Toggle
+                document.querySelectorAll('.ranking-nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                // Update Title
+                const comp = link.dataset.component;
+                const titleMap = {
+                    'cpu': 'CPU Rankings',
+                    'gpu': 'GPU Rankings',
+                    'ram': 'RAM Rankings',
+                    'ssd': 'SSD / Storage Rankings',
+                    'mb': 'Motherboard Rankings',
+                    'cooler': 'Cooler Rankings',
+                    'psu': 'PSU Rankings',
+                    'case': 'Case Rankings'
+                };
+                document.getElementById('current-component-title').textContent = titleMap[comp] || 'Rankings';
+
+                // TODO: In a real app, this would fetch data from Firebase based on 'comp'.
+                // For this demo, we will just simulate content change for GPU as an example.
+                if (comp === 'gpu') {
+                    updateContentForGPU();
+                } else if (comp === 'cpu') {
+                    window.location.reload(); // Reload to reset to default CPU view
+                } else {
+                    // Placeholder for others
+                    alert("Ranking data for " + comp.toUpperCase() + " will be updated soon!");
+                }
+            });
+        });
+
+        // Example Function to switch data to GPU (Purely for visual demo)
+        function updateContentForGPU() {
+            // Performance #1
+            document.getElementById('perf-name-1').textContent = "NVIDIA GeForce RTX 4090";
+            document.getElementById('perf-score-1').textContent = "39,500 (3DMark)";
+            document.getElementById('perf-desc-1').textContent = "The ultimate graphics card. Capable of 4K 144Hz gaming with full Ray Tracing.";
+            document.getElementById('perf-img-1').src = "gpu_2.jpg"; // Using uploaded GPU image
+            
+            // In a real implementation, you would rebuild the list HTML here.
+        }
+    </script>
+</body>
+</html>

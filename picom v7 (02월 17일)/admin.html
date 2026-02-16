@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" class="protected-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - PiCom.com</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <style>
+        /* 탭 버튼 스타일 */
+        .admin-tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .admin-tab-btn {
+            flex: 1;
+            padding: 15px;
+            background-color: #f0f2f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .admin-tab-btn:hover {
+            background-color: #e4e6eb;
+        }
+        .admin-tab-btn.active {
+            background-color: #007aff;
+            color: white;
+            border-color: #007aff;
+        }
+        
+        /* 섹션 표시/숨김 애니메이션 */
+        .admin-section-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .admin-section-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pending Reports 필터 메뉴 스타일 */
+        .report-header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .report-filter-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .filter-menu-btn {
+            background: none;
+            border: none;
+            font-size: 1.8em;
+            cursor: pointer;
+            color: #555;
+            padding: 5px;
+            line-height: 1;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .filter-menu-btn:hover {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+        
+        /* 드롭다운 메뉴 */
+        .filter-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #ffffff;
+            min-width: 240px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            border: 1px solid #eee;
+            z-index: 10;
+            overflow: hidden;
+        }
+        .report-filter-menu:hover .filter-dropdown-content {
+            display: block;
+        }
+        .filter-dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.95em;
+            border-bottom: 1px solid #f9f9f9;
+            transition: background-color 0.2s;
+            cursor: pointer; /* 링크가 아니라 버튼 역할이므로 커서 지정 */
+        }
+        .filter-dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        .filter-dropdown-content a:hover {
+            background-color: #f5f5f7;
+            color: #007aff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="Index.html" class="logo-link">
+            <img src="logo.jpg" alt="PiCom Symbol" class="logo-symbol-img">
+            <span class="logo-text">PiCom.com</span>
+        </a>
+        
+        <div class="search-box">
+            <input type="text" placeholder="Search parts, features, errors, etc." class="search-input">
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+            </span> 
+        </div>
+
+        <div class="nav-links" id="mobile-menu">
+            <a href="#" class="nav-item">Compare</a>
+            <a href="component-guide.html" class="nav-item">Component Guide</a>
+            <a href="rankings.html" class="nav-item">Rankings</a>
+            <a href="community.html" class="nav-item">Community</a>
+            <a href="admin.html" class="nav-item" id="nav-admin-link" style="display: none; background-color: #fffbe6; color: #b08a00; font-weight: 600;">Admin</a>
+            
+            <a href="login.html" class="nav-item login-btn" id="nav-login-link" style="display: none;">Login</a>
+
+            <div class="profile-container" id="nav-profile-ui">
+                <a href="profile.html" class="profile-link">
+                    <span class="profile-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                    </span>
+                    <span class="profile-nickname" id="profile-nickname-text">User</span> 
+                </a>
+                <a href="#" class="nav-item" id="nav-logout-link">Logout</a>
+            </div>
+        </div>
+
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
+    </nav>
+
+    <div class="container" style="max-width: 100%; padding: 0 40px;">
+        <h1 class="page-title">Admin Dashboard</h1>
+
+        <div class="admin-tab-buttons">
+            <button class="admin-tab-btn active" onclick="switchAdminTab('popup')">📢 Popup Manager</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('reports')">🚨 Reports Manager</button>
+            <button class="admin-tab-btn" onclick="switchAdminTab('empty')">✨ Empty Slot</button>
+        </div>
+
+        <div id="section-popup" class="admin-section-content active">
+            <div class="admin-section" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                
+                <div class="report-header-wrapper">
+                    <div>
+                        <h2 style="margin-top: 0; margin-bottom: 5px;">📢 Global Popup Manager</h2>
+                        <p style="color: #666; margin: 0;">Manage and Design your site popup.</p>
+                    </div>
+                    
+                    <div class="report-filter-menu">
+                        <button class="filter-menu-btn" style="font-size: 2em;">≡</button>
+                        <div class="filter-dropdown-content">
+                            <a id="menu-popup-all">all your popup</a>
+                            <a id="menu-popup-post">post your popup</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="popup-views-wrapper" style="margin-top: 20px;">
+                    
+                    <div id="view-popup-all" class="popup-view-content" style="display: block;">
+                        <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="margin: 0;">📂 Saved Popups</h3>
+                            <button id="btn-add-new-popup" class="form-button" style="width: auto; padding: 10px 20px; background: #007aff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">➕ Add New Popup</button>
+                        </div>
+                        <div class="admin-table-container" id="saved-popups-container">
+                            <p style="text-align: center; color: #888; padding: 40px;">No popups saved yet.</p>
+                        </div>
+                    </div>
+
+                    <div id="view-popup-post" class="popup-view-content" style="text-align: center; padding: 40px; background: #f9f9f9; border-radius: 8px; display: none;">
+                        <h3>🚀 Post Your Popup</h3>
+                        <p style="color:#888;">Select a saved popup to publish.</p>
+                    </div>
+
+                    <!-- 숨겨진 팝업 생성 모달 -->
+                    <div id="popup-create-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;">
+                        <div style="background: white; border-radius: 16px; padding: 40px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+                            <div style="text-align: center; margin-bottom: 30px;">
+                                <h3 style="margin: 0 0 10px 0; color: #333;">📷 Upload Popup Image</h3>
+                                <p style="color: #666; margin: 0;">Select an image file to use as your popup.</p>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                                <label for="img-upload-input" style="cursor: pointer; display: inline-block;">
+                                    <div style="background: white; border: 2px solid #007aff; border-radius: 12px; padding: 20px 40px; color: #007aff; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='#f0f7ff'" onmouseout="this.style.background='white'">
+                                        📤 Choose Image File
+                                    </div>
+                                    <input type="file" id="img-upload-input" accept="image/*" style="display:none">
+                                </label>
+
+                                <div id="popup-image-preview" style="display: none; max-width: 500px; width: 100%; margin-top: 20px;">
+                                    <img id="preview-img" src="" alt="Preview" style="width: 100%; height: auto; border-radius: 12px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <p id="preview-filename" style="text-align: center; margin-top: 10px; color: #666; font-size: 0.9em;"></p>
+                                </div>
+
+                                <div style="width: 100%; max-width: 500px; margin-top: 20px;">
+                                    <label for="popup-link-url" style="display: block; font-weight: 600; color: #555; margin-bottom: 8px;">🔗 Link URL (Optional):</label>
+                                    <input type="text" id="popup-link-url" placeholder="https://example.com" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1em; box-sizing: border-box;">
+                                    <p style="color: #888; font-size: 0.85em; margin-top: 5px;">Users will be redirected to this URL when they click the popup image.</p>
+                                </div>
+
+                                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                    <button id="btn-save-popup" class="form-button" style="width: auto; padding: 12px 30px;" disabled>💾 Save Popup</button>
+                                    <button id="btn-cancel-popup" class="form-button" style="width: auto; padding: 12px 30px; background: #f0f0f0; color: #333;" onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='#f0f0f0'">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+
+        <div id="section-reports" class="admin-section-content">
+            <div class="admin-section" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                
+                <div class="report-header-wrapper">
+                    <div>
+                        <h2 id="report-section-title" style="margin-top: 0; margin-bottom: 5px;">🚨 Pending Reports</h2>
+                        <p style="color: #666; margin: 0;">Review and manage reported posts and comments.</p>
+                    </div>
+                    
+                    <div class="report-filter-menu">
+                        <button class="filter-menu-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" style="display: block;">
+                                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                        </button>
+                        <div class="filter-dropdown-content">
+                            <a id="btn-filter-pending">All Pending Reports</a>
+                            <a id="btn-filter-complete">Report marked as complete</a>
+                            <a id="btn-filter-deleted">Deleted reports</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-table-container" id="admin-reports-container">
+                    <p>Loading reports...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-empty" class="admin-section-content">
+            <div class="admin-section" style="background: white; padding: 30px; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+                <h2 style="color: #ccc;">Empty Section</h2>
+                <p style="color: #aaa;">This slot is reserved for future features.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 PiCom.com. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script> 
+    
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAb74jmnCVbPFQXY7_O6dZlV5UQDYjJzvk",
+        authDomain: "picom-b7b8e.firebaseapp.com",
+        projectId: "picom-b7b8e",
+        storageBucket: "picom-b7b8e.firebasestorage.app",
+        messagingSenderId: "399167423195",
+        appId: "1:399167423195:web:b2be3394bdac5e38fb02fe"
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <script src="script.js"></script> 
+
+    <script>
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-section-content').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const targetSection = document.getElementById('section-' + tabName);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

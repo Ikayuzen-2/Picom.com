@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is RAM? - PiCom.com</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .guide-content-container { max-width: 800px; margin: 0 auto; background-color: #ffffff; border: 1px solid #eee; border-radius: 12px; padding: 40px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); text-align: center; }
+        .guide-definition { font-size: 1.25em; color: #333; line-height: 1.7; margin: 0; margin-bottom: 50px; }
+        .ranking-header { text-align: left; border-left: 5px solid #007aff; padding-left: 15px; margin-bottom: 20px; margin-top: 40px; font-size: 1.5em; font-weight: 700; }
+        .local-ranking-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; text-align: left; }
+        .local-ranking-table th, .local-ranking-table td { padding: 12px; border-bottom: 1px solid #eee; }
+        .local-ranking-table th { background-color: #f9f9f9; color: #555; font-weight: 600; }
+        .rank-num { font-weight: bold; color: #007aff; text-align: center; }
+        .slideshow-container { width: 80%; max-width: 500px; position: relative; margin: 0 auto 30px auto; aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; border-radius: 12px; overflow: hidden; }
+        .mySlides { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; }
+        .mySlides img { width: 100%; height: 100%; object-fit: contain; }
+        .prev, .next { cursor: pointer; position: absolute; top: 50%; width: auto; padding: 16px; margin-top: -22px; color: white; font-weight: bold; font-size: 18px; transition: 0.6s ease; border-radius: 0 3px 3px 0; user-select: none; background-color: rgba(0,0,0,0.2); }
+        .next { right: 0; border-radius: 3px 0 0 3px; }
+        .prev { left: 0; border-radius: 0 3px 3px 0; }
+        .prev:hover, .next:hover { background-color: rgba(0,0,0,0.6); }
+        .fade { animation-name: fade; animation-duration: 1.5s; }
+        @keyframes fade { from {opacity: .4} to {opacity: 1} }
+    </style>
+</head>
+<body>
+<nav class="top-nav">
+        <a href="Index.html" class="logo-link">
+            <img src="logo.jpg" alt="PiCom Symbol" class="logo-symbol-img">
+            <span class="logo-text">PiCom.com</span>
+        </a>
+        
+        <div class="search-box">
+            <input type="text" placeholder="Search parts..." class="search-input">
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+            </span> 
+        </div>
+
+        <div class="nav-links" id="mobile-menu">
+            <a href="#" class="nav-item">Compare</a>
+            <a href="component-guide.html" class="nav-item" style="color: #007aff; font-weight: 600;">Component Guide</a>
+            <a href="rankings.html" class="nav-item">Rankings</a>
+            <a href="community.html" class="nav-item">Community</a>
+            <a href="admin.html" class="nav-item" id="nav-admin-link" style="display: none; background-color: #fffbe6; color: #b08a00; font-weight: 600;">Admin</a>
+            
+            <a href="login.html" class="nav-item login-btn" id="nav-login-link">Login</a>
+
+            <div class="profile-container" id="nav-profile-ui" style="display: none;">
+                <a href="profile.html" class="profile-link">
+                    <span class="profile-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                    </span>
+                    <span class="profile-nickname" id="profile-nickname-text">User</span> 
+                </a>
+                <a href="#" class="nav-item" id="nav-logout-link">Logout</a>
+            </div>
+        </div>
+
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
+    </nav>
+
+    <div class="container">
+        <div class="guide-content-container">
+            <h1 class="page-title" style="border:none; margin-bottom: 10px;">RAM (Memory)</h1>
+            
+            <div class="slideshow-container">
+                <div class="mySlides fade" style="display: flex;">
+                    <img src="ram_1.jpg" alt="DDR4 RAM Module">
+                </div>
+                <div class="mySlides fade">
+                    <img src="ram_2.jpg" alt="Offtek RAM Module">
+                </div>
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+            
+            <p class="guide-definition">
+                Think of RAM as the <strong>"Workbench"</strong>.
+                <br><br>
+                It's your computer's short-term memory. It holds the data your CPU is actively using right now for fast access. When you turn off the PC, this data is lost.
+            </p>
+
+            <div style="text-align: left;">
+                <h2 class="ranking-header">Popularity Ranking (Weekly)</h2>
+                <table class="local-ranking-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px; text-align: center;">Rank</th>
+                            <th>Model Name</th>
+                            <th>Type / Speed</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="rank-num">1</td>
+                            <td>Corsair Vengeance DDR5</td>
+                            <td>DDR5-6000 32GB</td>
+                            <td>$119</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">2</td>
+                            <td>G.Skill Trident Z5 Neo RGB</td>
+                            <td>DDR5-6000 32GB</td>
+                            <td>$129</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">3</td>
+                            <td>TeamGroup T-Force Delta RGB</td>
+                            <td>DDR5-6400 32GB</td>
+                            <td>$109</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">4</td>
+                            <td>Corsair Vengeance LPX</td>
+                            <td>DDR4-3200 16GB</td>
+                            <td>$49</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">5</td>
+                            <td>Kingston Fury Beast</td>
+                            <td>DDR5-5200 16GB</td>
+                            <td>$69</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 50px;"><a href="component-guide.html" class="form-button" style="width: auto; display: inline-block; text-decoration: none;">← Back to Guide</a></div>
+        </div>
+    </div>
+
+    <footer><p>&copy; 2025 PiCom.com. All rights reserved.</p></footer>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script> 
+    
+    <script>
+      const firebaseConfig = { apiKey: "AIzaSyAb74jmnCVbPFQXY7_O6dZlV5UQDYjJzvk", authDomain: "picom-b7b8e.firebaseapp.com", projectId: "picom-b7b8e", storageBucket: "picom-b7b8e.firebasestorage.app", messagingSenderId: "399167423195", appId: "1:399167423195:web:b2be3394bdac5e38fb02fe" };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

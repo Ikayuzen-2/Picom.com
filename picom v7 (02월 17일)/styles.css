@@ -1,0 +1,3137 @@
+/* ============================================
+   PiCom.com - Apple-inspired Design System
+   Beginner-friendly PC Builder
+   ============================================ */
+
+/* Design Tokens (Apple HIG inspired) */
+:root {
+    --color-primary: #007aff;
+    --color-primary-hover: #0056b3;
+    --color-surface: #ffffff;
+    --color-background: #f5f5f7;
+    --color-text: #1d1d1f;
+    --color-text-secondary: #6e6e73;
+    --color-text-tertiary: #86868b;
+    --color-border: #d2d2d7;
+    --color-border-light: #e8e8ed;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 24px;
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* 1. Basic Reset & Typography (SF Pro feel) */
+body {
+    background-color: var(--color-background); 
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--color-text);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 1-1. Main Content Wrapper */
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 24px;
+    flex-grow: 1; 
+}
+
+/* 2. Top Navigation Bar (Apple-style minimal) */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 48px;
+    background-color: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--color-border-light);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+    flex-shrink: 0; 
+}
+
+/* 2-1. Logo (Image + Text) */
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    flex-shrink: 0; 
+}
+.logo-symbol-img {
+    height: 80px; 
+    width: auto; 
+    object-fit: contain; 
+    margin-right: -8px; 
+}
+.logo-text {
+    color: var(--color-text);
+    font-size: 1.5em; 
+    font-weight: 600; 
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+
+/* 2-2. Search Box (Apple-style rounded) */
+.search-box {
+    position: relative;
+    flex-grow: 1;
+    max-width: 420px;
+    margin: 0 32px; 
+}
+.search-input {
+    width: 100%;
+    padding: 10px 14px 10px 42px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.04);
+    font-size: 0.95em;
+    color: var(--color-text);
+    transition: var(--transition-smooth);
+}
+.search-input::placeholder {
+    color: var(--color-text-tertiary);
+}
+.search-input:focus {
+    outline: none;
+    background-color: var(--color-surface);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-tertiary);
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+}
+.search-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* 2-3. Nav Links */
+.nav-links {
+    display: flex;
+    align-items: center; 
+    gap: 25px;
+    white-space: nowrap;
+}
+.nav-item {
+    text-decoration: none;
+    color: #333;
+    font-size: 1em;
+    padding: 5px 0;
+    transition: color 0.2s;
+}
+.nav-item:hover {
+    color: #007aff;
+}
+.login-btn {
+    display: none; 
+    background-color: #007aff;
+    color: white !important;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+.login-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 2-4. Hamburger Button */
+.hamburger-btn {
+    display: none; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: #1c1c1c;
+}
+.hamburger-btn svg {
+    width: 28px;
+    height: 28px;
+}
+
+
+/* 3. Main Page - AI Start Card (Hero CTA) */
+.main-ai-section {
+    text-align: center;
+    padding: 64px 0 80px;
+    margin-bottom: 80px; 
+}
+h1 {
+    font-weight: 600;
+    font-size: 2.75em;
+    margin-bottom: 12px;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+}
+.subtitle {
+    color: var(--color-text-secondary);
+    font-size: 1.25em;
+    margin-bottom: 48px;
+    font-weight: 400;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.start-card-link {
+    text-decoration: none;
+}
+.start-card {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-xl);
+    padding: 56px 48px;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    border: 1px solid var(--color-border-light);
+    transition: var(--transition-smooth);
+    max-width: 560px;
+    margin: 0 auto;
+}
+.start-card:hover {
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0, 122, 255, 0.2);
+    transform: translateY(-6px);
+    border-color: rgba(0, 122, 255, 0.3);
+}
+.start-card h2 {
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 1.65em;
+    letter-spacing: -0.02em;
+}
+
+/* 4. Main Page - Secondary Features */
+.secondary-features h2 {
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: left;
+    border-left: 5px solid #007aff;
+    padding-left: 15px;
+    margin-top: 50px;
+}
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 25px;
+}
+.feature-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background-color: var(--color-surface);
+    padding: 32px 28px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
+    border: 1px solid var(--color-border-light);
+}
+.feature-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+    border-color: rgba(0, 122, 255, 0.25);
+}
+.feature-card .icon {
+    font-size: 2.5em; 
+    display: block;
+    margin-bottom: 10px;
+    color: #007aff; 
+}
+.feature-card .icon svg {
+    width: 1.5em; 
+    height: 1.5em;
+}
+.feature-card h3 {
+    font-weight: 600;
+    font-size: 1.4em;
+    color: #1c1c1c;
+}
+.feature-card p {
+    color: #666;
+    margin-top: 5px;
+}
+
+/* 5. Footer */
+footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--color-text-tertiary);
+    background-color: var(--color-background); 
+    border-top: 1px solid var(--color-border-light);
+    width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0; 
+}
+
+
+/* --- 6. Login/Sign Up Form Styles --- */
+
+.form-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+.form-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    padding: 35px 40px;
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid #eee;
+}
+.form-card h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #1c1c1c;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"],
+.form-group select, 
+.form-group textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1em;
+    box-sizing: border-box; 
+    background-color: white; 
+    font-family: inherit; 
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007aff;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+.form-group select {
+    appearance: none; 
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2em;
+}
+.form-group textarea {
+    min-height: 250px;
+    line-height: 1.6;
+}
+.form-tags-hint {
+    display: block;
+    font-size: 0.9em;
+    color: #888;
+    margin-top: 8px;
+}
+
+.form-button {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 1.05em;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.form-button:hover {
+    background-color: var(--color-primary-hover);
+}
+.form-links {
+    text-align: center;
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+.form-link {
+    color: #007aff;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+.form-link:hover {
+    text-decoration: underline;
+}
+
+
+/* --- 7. Logged-In Profile UI --- */
+
+.profile-container {
+    display: none; 
+    align-items: center;
+    gap: 10px; 
+    margin-left: 15px;
+}
+.profile-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+.profile-link:hover {
+    background-color: #f0f0f0; 
+}
+.profile-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e9e9eb; 
+    color: #333;
+    margin-right: 10px;
+    overflow: hidden; 
+}
+.profile-icon svg {
+    width: 20px;
+    height: 20px;
+}
+.profile-nickname {
+    font-weight: 600;
+    font-size: 0.95em;
+    white-space: nowrap;
+}
+#nav-logout-link {
+    display: none; 
+    color: #888; 
+    font-size: 0.9em;
+    margin-left: 5px;
+    padding: 5px 0; 
+}
+#nav-logout-link:hover {
+    color: #007aff;
+    text-decoration: underline;
+}
+
+
+/* --- 9. Profile Page Layout --- */
+.page-title {
+    font-size: 2.8em;
+    font-weight: 700;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+.profile-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr; 
+    gap: 40px;
+}
+.profile-sidebar .profile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.profile-nav-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 1.05em;
+    font-weight: 500;
+    color: #333;
+    padding: 14px;
+    border-radius: 8px;
+    transition: background-color 0.2s, color 0.2s;
+}
+.profile-nav-link .nav-icon {
+    margin-right: 12px;
+    font-size: 1.2em;
+}
+.profile-nav-link:hover {
+    background-color: #f5f5f7; 
+}
+.profile-nav-link.active {
+    background-color: #007aff;
+    color: white;
+    font-weight: 600;
+}
+.profile-content h2 {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.profile-content .subtitle {
+    font-size: 1.1em;
+    color: #666;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+.profile-tab-content {
+    display: none; 
+}
+.profile-tab-content.active {
+    display: block; 
+}
+.profile-form {
+    max-width: 600px; 
+    padding: 30px; 
+}
+.favorites-grid {
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 20px;
+}
+.favorite-card {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+.favorite-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+.item-image-placeholder {
+    width: 80px;
+    height: 80px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #aaa;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+.item-details {
+    flex-grow: 1;
+}
+.item-details h3 {
+    font-size: 1.25em;
+    font-weight: 600;
+    color: #1c1c1c;
+    margin: 0 0 5px 0;
+}
+.item-details p {
+    color: #666;
+    margin: 0 0 8px 0;
+}
+.item-price {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #007aff;
+}
+.item-remove-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.8em;
+    color: #aaa;
+    text-decoration: none;
+    line-height: 1;
+    padding: 5px;
+}
+.item-remove-btn:hover {
+    color: #ff3b30; 
+}
+.empty-state {
+    text-align: center;
+    padding: 60px;
+    font-size: 1.1em;
+    color: #888;
+    background: #fdfdfd;
+    border-radius: 12px;
+    border: 2px dashed #eee;
+}
+
+/* --- 10. 구글 로그인 버튼 --- */
+.form-divider {
+    text-align: center;
+    color: #aaa;
+    margin: 20px 0;
+    font-weight: 500;
+}
+.google-btn {
+    background-color: #ffffff; 
+    color: #333; 
+    border: 1px solid #ddd; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.google-btn:hover {
+    background-color: #f7f7f7; 
+    border-color: #ccc;
+}
+.google-icon {
+    margin-right: 5px;
+}
+
+
+/* --- 11. 커뮤니티 페이지 --- */
+.community-nav {
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 30px;
+}
+.community-tab-link {
+    padding: 12px 20px;
+    text-decoration: none;
+    font-weight: 600;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+.community-tab-link:hover {
+    color: #000;
+    background-color: #f5f5f7;
+}
+.community-tab-link.active {
+    color: #007aff;
+    border-bottom-color: #007aff;
+}
+.write-btn {
+    margin-left: auto; 
+    background-color: #007aff;
+    color: white;
+    border-radius: 8px 8px 0 0;
+    border-bottom-color: transparent;
+}
+.write-btn:hover {
+    background-color: #0056b3;
+    color: white;
+}
+.community-tab-pane {
+    display: none;
+}
+.community-tab-pane.active {
+    display: block;
+}
+.post-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+}
+.post-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.post-category {
+    font-size: 0.8em;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background-color: #eef5ff;
+    color: #007aff;
+}
+.post-category.error {
+    background-color: #ffeef0;
+    color: #ff3b30;
+}
+.post-category.notice-cat {
+    background-color: #e6f7ff;
+    color: #0056b3;
+}
+.post-title {
+    margin: 0;
+    font-size: 1.4em;
+    color: #1c1c1c;
+}
+.post-title a {
+    text-decoration: none;
+    color: inherit;
+}
+.post-title a:hover {
+    text-decoration: underline;
+}
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+.tag {
+    font-size: 0.85em;
+    background-color: #f0f0f0;
+    color: #555;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+.post-excerpt {
+    color: #333;
+    margin: 10px 0 20px 0;
+    line-height: 1.6;
+}
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    color: #888;
+}
+.post-recommend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- [수정됨] 15. 'Liked' (Recommend) Button Style --- */
+.recommend-btn {
+    background: none;
+    border: 1px solid #ddd; 
+    color: #aaa; /* 기본 색상 (빈 하트) */
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 마우스 올렸을 때 빨간색 */
+.recommend-btn:hover {
+    background: #fff0f0;
+    border-color: #ff3b30;
+    color: #ff3b30;
+}
+
+/* [★ 수정됨] 추천 상태: 빨간색으로 변경 */
+.recommend-btn.liked {
+    background-color: #fff0f0; 
+    border-color: #ff3b30;     
+    color: #ff3b30; /* 아이콘 색상 (빨간색) */
+}
+
+.recommend-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.recommend-count {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #333;
+}
+
+
+/* --- 12. 개별 포스트 페이지 (post-detail.html) --- */
+.post-full-content {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    padding: 40px 50px;
+    position: relative; 
+}
+.post-meta-detail {
+    margin: 15px 0;
+    font-size: 1.1em;
+    color: #666;
+}
+.post-body {
+    margin-top: 30px;
+    font-size: 1.1em;
+    line-height: 1.7;
+}
+.post-body p {
+    margin-bottom: 20px;
+}
+.post-menu-container {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
+.menu-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 2em;
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+    padding: 0 10px;
+    line-height: 0.5;
+}
+.menu-toggle-btn:hover {
+    color: #000;
+}
+.menu-dropdown {
+    display: none; 
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 160px;
+    z-index: 10;
+    overflow: hidden;
+}
+.menu-dropdown.show {
+    display: block; 
+}
+.menu-item {
+    display: block;
+    padding: 12px 18px;
+    text-decoration: none;
+    color: #333;
+    font-size: 0.95em;
+}
+.menu-item:hover {
+    background-color: #f5f5f7;
+}
+.menu-item.delete {
+    color: #ff3b30;
+}
+/* --- [New] Updated Comments & Reply Styles --- */
+
+
+.comments-section {
+    margin-top: 40px;
+}
+
+.comments-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* 1. 하단 고정 입력창 (Floating Bar) */
+.comment-write-box {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    background-color: #ffffff;
+    padding: 10px 15px 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+    border: 1px solid #e0e0e0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.comment-write-box:focus-within {
+    box-shadow: 0 8px 30px rgba(0, 122, 255, 0.25);
+    border-color: #007aff;
+    bottom: 35px;
+}
+
+/* 2. 텍스트 입력 영역 */
+.comment-write-box textarea {
+    flex-grow: 1;
+    height: 24px;
+    min-height: 24px;
+    max-height: 80px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 1em;
+    resize: none;
+    outline: none;
+    line-height: 24px;
+    font-family: inherit;
+}
+
+/* 3. [신규] '답글 작성 중' 알림 (전송 버튼 옆) */
+.reply-context-inline {
+    display: none; /* 기본 숨김 */
+    align-items: center;
+    font-size: 0.85em;
+    color: #007aff;
+    background-color: #eaf4ff; /* 연한 파란 배경 */
+    padding: 4px 10px;
+    border-radius: 15px;
+    margin-right: 10px;
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+}
+
+.reply-context-inline.show {
+    display: flex; /* 활성화 시 보임 */
+}
+
+/* 답글 취소(X) 버튼 */
+.btn-cancel-reply-inline {
+    background: none;
+    border: none;
+    color: #007aff;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 1.1em;
+    line-height: 1;
+    padding: 0 2px;
+}
+.btn-cancel-reply-inline:hover {
+    color: #0056b3;
+}
+
+/* 4. 전송 버튼 (종이비행기 아이콘) */
+.send-comment-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007aff;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, color 0.2s;
+    margin-left: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.send-comment-btn:hover {
+    background-color: #f0f8ff;
+    transform: scale(1.1);
+    color: #0056b3;
+}
+
+.send-comment-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    margin-left: 2px;
+}
+
+/* --- [수정] 유튜브 스타일 댓글 디자인 (교체할 부분) --- */
+
+/* 1. 댓글 카드 (Flex Layout, 배경 제거) */
+.comment-card {
+    display: flex; /* 좌우 배치 */
+    gap: 15px;
+    background: transparent; /* 흰 박스 제거 */
+    border: none;
+    padding: 10px 0;
+    margin-bottom: 5px;
+    position: relative;
+}
+
+/* 대댓글 스타일 (들여쓰기) */
+.comment-card.reply-item {
+    margin-left: 50px; /* 대댓글 들여쓰기 */
+    margin-top: 0;
+    padding-top: 5px;
+}
+
+/* 2. 프로필 아바타 (원형) */
+.comment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ef5350; /* 유튜브 느낌의 랜덤 컬러 대용 */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    flex-shrink: 0; /* 크기 고정 */
+}
+
+/* 3. 우측 콘텐츠 영역 */
+.comment-content-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 작성자 + 날짜 한 줄 배치 */
+.comment-header-line {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.comment-author {
+    font-size: 0.95em;
+    font-weight: 700;
+    color: #0f0f0f; /* 진한 검정 */
+}
+
+.comment-meta {
+    font-size: 0.8em;
+    color: #606060; /* 연한 회색 */
+}
+
+/* 본문 및 멘션 */
+.comment-body {
+    font-size: 0.95em;
+    color: #0f0f0f;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    
+    /* [수정됨] 긴 글씨 자동 줄바꿈 추가 */
+    word-break: break-word;     /* 단어가 너무 길면 끊어서 줄바꿈 */
+    overflow-wrap: break-word;  /* 텍스트가 영역을 넘치지 않게 줄바꿈 */
+    white-space: pre-wrap;      /* 사용자가 입력한 줄바꿈도 유지하며 자동 줄바꿈 */
+}
+
+.mention {
+    color: #065fd4; /* 유튜브 링크 색상 */
+    background-color: #e5f2ff; /* 살짝 배경 추가 */
+    padding: 0 4px;
+    border-radius: 2px;
+    margin-right: 4px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 하단 버튼 (답글) */
+.comment-actions-line {
+    display: flex;
+    align-items: center;
+}
+
+.reply-toggle-btn {
+    background: none;
+    border: none;
+    color: #606060;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 18px;
+    transition: background 0.2s;
+}
+.reply-toggle-btn:hover {
+    background-color: #f2f2f2;
+    color: #0f0f0f;
+    text-decoration: none;
+}
+
+/* 메뉴 버튼 (점 3개) 위치 수정 */
+.comment-menu-wrapper {
+    position: relative; /* 드롭다운 기준점 */
+}
+
+.comment-menu-btn {
+    background: none;
+    border: none;
+    color: #aaa; /* 항상 보이기 때문에 연한 회색으로 변경 추천 */
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    opacity: 1; /* [수정됨] 항상 보이도록 설정 */
+    transition: color 0.2s; /* 색상 변화 애니메이션 */
+}
+
+/* 버튼 위에 마우스를 올렸을 때 진해지도록 추가 */
+.comment-menu-btn:hover {
+    color: #333;
+}
+
+/* [삭제됨] 카드를 호버해야 버튼이 나타나는 규칙은 이제 필요 없습니다. */
+/* .comment-card:hover .comment-menu-btn {
+    opacity: 1;
+} 
+*/
+
+.menu-dropdown {
+    right: 0;
+    top: 30px; /* 버튼 아래 */
+}
+
+/* [수정] 대댓글 왼쪽 선으로 묶음 표시 */
+.comment-card.reply-item {
+    margin-left: 20px;        /* 들여쓰기 */
+    background-color: transparent; /* 대댓글도 배경 투명 */
+    border-left: 3px solid #ddd;   /* 왼쪽 회색 선으로 연결된 느낌 */
+    border-bottom: none;      /* 대댓글끼리는 하단 선 제거 (선택사항) */
+    padding-left: 15px;       /* 선과 내용 사이 간격 */
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 0.95em;
+}
+
+/* 깊은 대댓글 (대댓글의 대댓글) */
+.comment-card.reply-item .comment-card.reply-item {
+    margin-left: 15px;
+    border-left: 2px solid #ccc; /* 깊어질수록 선 얇게/진하게 */
+}
+
+/* 깊은 대댓글 (더 깊은 들여쓰기) */
+.comment-card.reply-item .comment-card.reply-item {
+    background-color: #f1f1f5;
+    margin-left: 20px;
+}
+
+.comment-author {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.comment-body {
+    margin-bottom: 5px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.comment-meta {
+    font-size: 0.8em;
+    color: #aaa;
+}
+
+/* 6. 답글 달기 버튼 (↳ Reply) */
+/* [수정] ↳ 모양 아이콘 버튼 */
+.reply-toggle-btn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 5px 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 5px;
+    transition: color 0.2s;
+}
+
+/* 마우스 올렸을 때 */
+.reply-toggle-btn:hover {
+    color: #007aff;
+    text-decoration: underline;
+}
+
+/* ↳ 아이콘 가상 요소로 추가 (HTML에 텍스트만 있어도 됨) */
+.reply-toggle-btn::before {
+    content: "↳";
+    font-size: 1.2em;
+    font-weight: bold;
+    display: inline-block;
+    transform: translateY(-1px);
+}
+.reply-toggle-btn:hover {
+    color: #007aff;
+    text-decoration: underline;
+}
+
+/* --- 13. 관리자 옵션 숨기기 --- */
+#admin-notice-option {
+    display: none; 
+    background-color: #fffbe6; 
+    font-weight: bold;
+}
+
+/* --- 14. 댓글 메뉴 --- */
+.comment-menu-container {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+.comment-menu-btn {
+    background: none;
+    border: none;
+    font-size: 1.5em; /* 점 3개 크기 */
+    font-weight: bold;
+    color: #aaa; /* 연한 회색 */
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 0.5;
+}
+.comment-menu-btn:hover {
+    color: #000;
+}
+
+
+/* --- 8. Mobile Responsive Media Query (최종) --- */
+@media (max-width: 800px) {
+    /* 8-1. Nav */
+    .top-nav {
+        padding: 15px 20px; 
+    }
+    .logo-symbol-img {
+        height: 40px;
+    }
+    .logo-text {
+        font-size: 1.3em;
+    }
+    .hamburger-btn {
+        display: block;
+    }
+    .search-box {
+        margin: 0 15px;
+    }
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 73px; 
+        left: 0;
+        right: 0;
+        background-color: #ffffff;
+        flex-direction: column;
+        width: 100%;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
+        border-top: 1px solid #f0f0f0;
+        padding: 10px 0;
+        gap: 0;
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .nav-item {
+        padding: 15px 20px;
+        width: 100%;
+        box-sizing: border-box; 
+    }
+    .login-btn {
+        margin: 10px 20px;
+        text-align: center;
+        width: auto; 
+        padding: 12px 18px; 
+    }
+
+    /* 8-2. Profile UI (Mobile) */
+    .profile-container {
+        margin-left: 0;
+        width: 100%;
+        flex-direction: column; 
+        align-items: flex-start;
+        gap: 0;
+    }
+    .profile-link {
+        padding: 15px 20px; 
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .profile-nickname {
+        font-size: 1em;
+    }
+    #nav-logout-link {
+        padding: 10px 20px;
+        font-size: 1em;
+        width: 100%;
+        box-sizing: border-box;
+        margin-left: 0;
+    }
+
+    /* 8-3. Main Content (Mobile) */
+    .container {
+        margin-top: 20px; 
+        padding: 0 15px;
+    }
+    h1 {
+        font-size: 2em;
+    }
+    .subtitle {
+        font-size: 1.1em;
+    }
+    .main-ai-section {
+        margin-bottom: 60px;
+    }
+    .start-card {
+        padding: 30px;
+    }
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* 8-4. Forms (Mobile) */
+    .form-container {
+        padding: 30px 15px;
+    }
+    .form-card {
+        padding: 30px 25px;
+    }
+    
+    /* 8-5. Profile Page (Mobile) */
+    .page-title {
+        font-size: 2.2em;
+    }
+    .profile-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    .profile-sidebar .profile-nav {
+        flex-direction: row; 
+        overflow-x: auto; 
+        padding: 10px;
+    }
+    .profile-nav-link {
+        flex-shrink: 0; 
+        padding: 10px 14px;
+        font-size: 0.95em;
+    }
+    .profile-nav-link .nav-icon {
+        font-size: 1.1em;
+        margin-right: 8px;
+    }
+    .profile-form {
+        padding: 20px;
+        box-shadow: none;
+        border: none;
+    }
+    
+    /* 8-6. Community Page (Mobile) */
+    .community-nav {
+        gap: 5px;
+    }
+    .community-tab-link {
+        padding: 10px 8px;
+        font-size: 0.9em;
+        text-align: center;
+    }
+    .write-btn {
+        padding: 10px 12px;
+    }
+    .post-title {
+        font-size: 1.2em;
+    }
+
+    /* 8-7. Post Detail Page (Mobile) */
+    .post-full-content {
+        padding: 30px 20px;
+    }
+    .comments-section {
+        margin-top: 25px;
+    }
+}
+
+/* --- [신규] 16. File Upload & Image Display Styles --- */
+
+/* 글쓰기 페이지의 파일 입력란 */
+.file-input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9f9;
+    font-family: inherit;
+    font-size: 1em;
+}
+
+/* 글쓰기 페이지의 이미지 미리보기 */
+.image-preview-box {
+    margin-top: 15px;
+}
+.image-preview-box img {
+    max-width: 200px;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+/* 글쓰기 페이지의 업로드 진행률 표시 */
+.upload-progress-bar {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #eef5ff;
+    color: #0056b3;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+/* 커뮤니티 목록의 '사진 있음' 아이콘 */
+.post-image-icon {
+    display: inline-block;
+    color: #007aff;
+    font-size: 1.1em;
+    margin-right: 8px;
+}
+
+/* 게시글 상세 페이지의 본문 이미지 */
+.post-image-full {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    margin-bottom: 30px; /* 이미지와 글 내용 사이 간격 */
+}
+
+/* --- [신규] 17. Admin Dashboard Styles --- */
+.admin-table-container {
+    width: 100%;
+    overflow-x: auto; /* 모바일에서 표가 넘칠 경우 스크롤 */
+}
+
+.admin-report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    font-size: 0.95em;
+}
+.admin-report-table th,
+.admin-report-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+    line-height: 1.5;
+}
+.admin-report-table th {
+    background-color: #f9f9fb;
+    font-weight: 600;
+    color: #333;
+}
+.admin-report-table tr:last-child td {
+    border-bottom: none;
+}
+.admin-report-table td .form-button {
+    width: auto;
+    padding: 8px 12px;
+    font-size: 0.9em;
+}
+.admin-report-table td a {
+    color: #007aff;
+    font-weight: 500;
+    text-decoration: none;
+}
+.admin-report-table td a:hover {
+    text-decoration: underline;
+}
+/* --- 18. AI Quote Page Styles --- */
+
+/* Progress Bar */
+.quiz-progress-container {
+    max-width: 600px;
+    margin: 20px auto 40px;
+    text-align: center;
+}
+.progress-track {
+    background-color: #e0e0e0;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+.progress-fill {
+    background-color: #007aff;
+    height: 100%;
+    width: 0%;
+    transition: width 0.4s ease;
+}
+.progress-text {
+    font-size: 0.9em;
+    color: #888;
+    font-weight: 600;
+}
+
+/* Quiz Box (Beginner-friendly large tap targets) */
+.quiz-card {
+    background: var(--color-surface);
+    border-radius: var(--radius-xl);
+    padding: 48px 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border-light);
+    animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.question-title {
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #1c1c1c;
+}
+
+/* Option Buttons */
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.btn-option {
+    background: var(--color-background);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    padding: 22px 24px;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+.btn-option:hover {
+    border-color: var(--color-primary);
+    background: rgba(0, 122, 255, 0.06);
+    transform: translateY(-2px);
+}
+.opt-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+.opt-sub {
+    font-size: 0.95em;
+    color: #666;
+}
+
+.quiz-footer {
+    margin-top: 30px;
+    height: 40px; /* 고정 높이 (버튼 없어도 레이아웃 유지용) */
+}
+.back-button {
+    background: none;
+    border: none;
+    color: #888;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 5px 10px;
+}
+.back-button:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+/* Loading Animation */
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #007aff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 30px auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Result Page */
+.result-container {
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+    max-width: 700px;
+    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+}
+.ai-badge {
+    background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.result-header h1 {
+    font-size: 2.5em;
+    margin: 20px 0 10px;
+    color: #1c1c1c;
+}
+.result-header p {
+    color: #666;
+    font-size: 1.2em;
+    margin-bottom: 40px;
+}
+
+/* Parts List */
+.parts-list {
+    text-align: left;
+    background: #f9f9fb;
+    border-radius: 12px;
+    padding: 20px;
+}
+.part-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+.part-row:last-child {
+    border-bottom: none;
+}
+.part-type {
+    font-weight: 700;
+    color: #888;
+    width: 80px;
+}
+.part-name {
+    font-weight: 600;
+    color: #333;
+    flex-grow: 1;
+}
+/* --- 19. Result Multiple Cards --- */
+.results-grid {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto; /* 모바일에서 가로 스크롤 */
+    padding-bottom: 10px;
+}
+
+.result-card {
+    flex: 1;
+    min-width: 280px; /* 카드 최소 너비 */
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 25px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-color: #007aff;
+}
+
+/* 추천 태그 (Best Value 등) */
+.tag-badge {
+    display: inline-block;
+    background: #007aff;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.tag-badge.value { background: #34c759; } /* 초록색 (가성비) */
+.tag-badge.performance { background: #ff3b30; } /* 빨간색 (고성능) */
+
+.price-est {
+    font-size: 1.5em;
+    font-weight: 800;
+    color: #1c1c1c;
+    margin: 10px 0;
+}
+
+/* --- [신규] 20. Rankings Page Styles (Integrated) --- */
+
+/* 20-1. Layout (Sidebar + Content) */
+.ranking-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+/* 20-2. Sidebar Navigation */
+.ranking-sidebar .ranking-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 100px; /* 스크롤 시 고정 */
+}
+.ranking-nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 500;
+    color: #555;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+.ranking-nav-link:hover {
+    background-color: #f5f5f7;
+    color: #000;
+}
+.ranking-nav-link.active {
+    background-color: #eef5ff;
+    color: #007aff;
+    font-weight: 700;
+}
+
+/* 20-3. Main Content Header & Tabs */
+.ranking-header-area {
+    margin-bottom: 30px;
+}
+.ranking-title {
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #1c1c1c;
+}
+
+/* 3-Type Filter Tabs (Performance / Popularity / Overall) */
+.rank-type-tabs {
+    display: flex;
+    gap: 10px;
+    background: #f0f2f5;
+    padding: 5px;
+    border-radius: 12px;
+    display: inline-flex; /* 콘텐츠 너비에 맞춤 */
+}
+.rank-type-btn {
+    padding: 10px 24px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.rank-type-btn.active {
+    background: #ffffff;
+    color: #007aff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+/* 각 타입별 활성 컬러 포인트 */
+.rank-type-btn[data-type="performance"].active { color: #ff3b30; } /* Red */
+.rank-type-btn[data-type="popularity"].active { color: #007aff; } /* Blue */
+.rank-type-btn[data-type="overall"].active { color: #8e44ad; } /* Purple */
+
+/* 20-4. Ranking Cards Styling */
+.ranking-list-container {
+    display: none; /* JS로 활성화된 탭만 보여줌 */
+    animation: fadeIn 0.4s ease;
+}
+.ranking-list-container.active {
+    display: block;
+}
+
+/* 1위 강조 카드 (Top Ranker) */
+.top-rank-card {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fcff 100%);
+    border: 2px solid #007aff; /* 1위 테두리 강조 */
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 122, 255, 0.15);
+    overflow: hidden;
+}
+.top-rank-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #007aff;
+    color: white;
+    padding: 8px 20px;
+    border-bottom-right-radius: 16px;
+    font-weight: 800;
+    font-size: 1.1em;
+    z-index: 1;
+}
+/* 타입별 1위 카드 테두리/배지 색상 변경 */
+.top-rank-card.perf { border-color: #ff3b30; }
+.top-rank-card.perf .top-rank-badge { background: #ff3b30; }
+.top-rank-card.pop { border-color: #007aff; }
+.top-rank-card.pop .top-rank-badge { background: #007aff; }
+.top-rank-card.all { border-color: #8e44ad; }
+.top-rank-card.all .top-rank-badge { background: #8e44ad; }
+
+.top-rank-img {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    margin-right: 40px;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+}
+.top-rank-info h3 {
+    font-size: 1.8em;
+    margin: 0 0 10px 0;
+    color: #1c1c1c;
+}
+.rank-score-box {
+    display: inline-block;
+    background: #f0f0f0;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+.rank-score-box strong {
+    color: #333;
+    font-size: 1.1em;
+}
+.top-rank-desc {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* 2위~5위 리스트 아이템 */
+.rank-list-item {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 15px 25px;
+    margin-bottom: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.rank-list-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border-color: #ddd;
+}
+.rank-num-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin-right: 20px;
+    font-size: 1.1em;
+    flex-shrink: 0;
+}
+/* 메달 색상 */
+.rank-num-circle.rank-2 { background: #e0e0e0; color: #555; border: 2px solid #ccc; } /* Silver */
+.rank-num-circle.rank-3 { background: #ffedd0; color: #a05a2c; border: 2px solid #e6b98d; } /* Bronze */
+
+.rank-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-right: 20px;
+    border-radius: 6px;
+    background: #fff;
+}
+.rank-item-info {
+    flex-grow: 1;
+}
+.rank-item-name {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #1c1c1c;
+    margin-bottom: 4px;
+    display: block;
+}
+.rank-item-spec {
+    font-size: 0.9em;
+    color: #888;
+}
+.rank-item-score {
+    font-weight: 700;
+    color: #007aff;
+    font-size: 1.1em;
+}
+
+/* Mobile Responsive for Rankings */
+@media (max-width: 800px) {
+    .ranking-layout {
+        grid-template-columns: 1fr; /* 사이드바 위로 이동 */
+        gap: 20px;
+    }
+    .ranking-sidebar .ranking-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px;
+        position: static;
+    }
+    .ranking-nav-link {
+        white-space: nowrap;
+        padding: 8px 14px;
+        font-size: 0.9em;
+    }
+    .top-rank-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    .top-rank-img {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    .rank-type-tabs {
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: space-between;
+    }
+    .rank-type-btn {
+        padding: 10px 15px;
+        flex-grow: 1;
+        font-size: 0.9em;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* ========================================= */
+/* 7. Component Guide (Main Page & Sub Pages) */
+/* ========================================= */
+
+/* Guide Grid (Main Page) */
+.guide-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* PC: 4열 */
+    gap: 20px;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Guide Button */
+.guide-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 700;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    cursor: pointer;
+    gap: 15px;
+}
+.guide-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 122, 255, 0.15);
+    border-color: #007aff;
+    color: #007aff;
+}
+
+/* Guide Icon */
+.guide-icon-svg {
+    width: 48px; 
+    height: 48px; 
+    color: #007aff; 
+    fill: currentColor;
+    transition: transform 0.3s ease;
+}
+.guide-button:hover .guide-icon-svg { 
+    transform: scale(1.1); 
+}
+
+/* Toggle Buttons (More/Less) */
+.toggle-btn-container { 
+    text-align: center; 
+    margin-top: 30px; 
+    margin-bottom: 60px; 
+}
+.toggle-btn {
+    background-color: #f0f2f5; 
+    color: #666; 
+    border: none; 
+    padding: 10px 25px;
+    font-size: 1em; 
+    font-weight: 600; 
+    border-radius: 30px; 
+    cursor: pointer; 
+    transition: all 0.2s;
+}
+.toggle-btn:hover { 
+    background-color: #e4e6eb; 
+    color: #333; 
+}
+.hidden-item { 
+    display: none; 
+}
+#less-btn-container { 
+    display: none; 
+}
+
+/* Detail Page Styles (CPU, GPU, etc.) */
+.guide-content-container {
+    max-width: 800px; 
+    margin: 0 auto; 
+    background-color: #ffffff; 
+    border: 1px solid #eee;
+    border-radius: 12px; 
+    padding: 40px; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
+    text-align: center;
+}
+.slideshow-container {
+    width: 70%; 
+    max-width: 500px; 
+    position: relative; 
+    margin: 0 auto 30px auto;
+    aspect-ratio: 4 / 3; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    background-color: #f0f0f0; 
+    border-radius: 12px; 
+    overflow: hidden;
+}
+.mySlides { 
+    display: none; 
+    width: 100%; 
+    height: 100%; 
+    align-items: center; 
+    justify-content: center; 
+}
+.mySlides img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain; 
+}
+.prev, .next {
+    cursor: pointer; 
+    position: absolute; 
+    top: 50%; 
+    width: auto; 
+    padding: 16px; 
+    margin-top: -22px;
+    color: white; 
+    font-weight: bold; 
+    font-size: 18px; 
+    transition: 0.6s ease; 
+    border-radius: 0 3px 3px 0;
+    user-select: none; 
+    background-color: rgba(0,0,0,0.2);
+}
+.next { 
+    right: 0; 
+    border-radius: 3px 0 0 3px; 
+}
+.prev { 
+    left: 0; 
+    border-radius: 0 3px 3px 0; 
+}
+.prev:hover, .next:hover { 
+    background-color: rgba(0,0,0,0.6); 
+}
+.fade { 
+    animation-name: fade; 
+    animation-duration: 1.5s; 
+}
+@keyframes fade { from {opacity: .4} to {opacity: 1} }
+
+.guide-definition { 
+    font-size: 1.25em; 
+    color: #333; 
+    line-height: 1.7; 
+    margin: 0 0 50px 0; 
+}
+.guide-definition strong { 
+    color: #007aff; 
+}
+.ranking-header {
+    text-align: left; 
+    border-left: 5px solid #007aff; 
+    padding-left: 15px; 
+    margin: 40px 0 20px 0;
+    font-size: 1.5em; 
+    font-weight: 700;
+}
+.local-ranking-table {
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 20px; 
+    text-align: left;
+}
+.local-ranking-table th, .local-ranking-table td { 
+    padding: 12px; 
+    border-bottom: 1px solid #eee; 
+}
+.local-ranking-table th { 
+    background-color: #f9f9f9; 
+    color: #555; 
+    font-weight: 600; 
+}
+.rank-num { 
+    font-weight: bold; 
+    color: #007aff; 
+    text-align: center; 
+}
+
+/* ========================================= */
+/* 9. Rankings Page Styles */
+/* ========================================= */
+.ranking-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 40px;
+    margin-top: 20px;
+}
+.ranking-sidebar .ranking-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 100px; 
+}
+.ranking-nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 500;
+    color: #555;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+.ranking-nav-link:hover {
+    background-color: #f5f5f7;
+    color: #000;
+}
+.ranking-nav-link.active {
+    background-color: #eef5ff;
+    color: #007aff;
+    font-weight: 700;
+}
+.ranking-header-area {
+    margin-bottom: 30px;
+}
+.ranking-title {
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #1c1c1c;
+}
+.rank-type-tabs {
+    display: flex;
+    gap: 10px;
+    background: #f0f2f5;
+    padding: 5px;
+    border-radius: 12px;
+    display: inline-flex; 
+}
+.rank-type-btn {
+    padding: 10px 24px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.rank-type-btn.active {
+    background: #ffffff;
+    color: #007aff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.rank-type-btn[data-type="performance"].active { color: #ff3b30; }
+.rank-type-btn[data-type="popularity"].active { color: #007aff; }
+.rank-type-btn[data-type="overall"].active { color: #8e44ad; }
+
+.ranking-list-container {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+.ranking-list-container.active {
+    display: block;
+}
+.top-rank-card {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #ffffff 0%, #f9fcff 100%);
+    border: 2px solid #007aff;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 122, 255, 0.15);
+    overflow: hidden;
+}
+.top-rank-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #007aff;
+    color: white;
+    padding: 8px 20px;
+    border-bottom-right-radius: 16px;
+    font-weight: 800;
+    font-size: 1.1em;
+    z-index: 1;
+}
+.top-rank-card.perf { border-color: #ff3b30; }
+.top-rank-card.perf .top-rank-badge { background: #ff3b30; }
+.top-rank-card.pop { border-color: #007aff; }
+.top-rank-card.pop .top-rank-badge { background: #007aff; }
+.top-rank-card.all { border-color: #8e44ad; }
+.top-rank-card.all .top-rank-badge { background: #8e44ad; }
+
+.top-rank-img {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    margin-right: 40px;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+}
+.top-rank-info h3 {
+    font-size: 1.8em;
+    margin: 0 0 10px 0;
+    color: #1c1c1c;
+}
+.rank-score-box {
+    display: inline-block;
+    background: #f0f0f0;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+.rank-score-box strong {
+    color: #333;
+    font-size: 1.1em;
+}
+.top-rank-desc {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+.rank-list-item {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 15px 25px;
+    margin-bottom: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.rank-list-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border-color: #ddd;
+}
+.rank-num-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin-right: 20px;
+    font-size: 1.1em;
+    flex-shrink: 0;
+}
+.rank-num-circle.rank-2 { background: #e0e0e0; color: #555; border: 2px solid #ccc; }
+.rank-num-circle.rank-3 { background: #ffedd0; color: #a05a2c; border: 2px solid #e6b98d; }
+
+.rank-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-right: 20px;
+    border-radius: 6px;
+    background: #fff;
+}
+.rank-item-info {
+    flex-grow: 1;
+}
+.rank-item-name {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #1c1c1c;
+    margin-bottom: 4px;
+    display: block;
+}
+.rank-item-spec {
+    font-size: 0.9em;
+    color: #888;
+}
+.rank-item-score {
+    font-weight: 700;
+    color: #007aff;
+    font-size: 1.1em;
+}
+
+/* ========================================= */
+/* 10. Mobile Responsive (For Component & Rankings) */
+/* ========================================= */
+@media (max-width: 800px) {
+    /* Component Guide Grid (Mobile) */
+    .guide-grid {
+        grid-template-columns: repeat(2, 1fr) !important; 
+        gap: 15px;
+    }
+    .guide-button { font-size: 1em; padding: 15px; }
+
+    /* Rankings */
+    .ranking-layout { grid-template-columns: 1fr; gap: 20px; }
+    .ranking-sidebar .ranking-nav { flex-direction: row; overflow-x: auto; padding: 10px; position: static; }
+    .ranking-nav-link { white-space: nowrap; padding: 8px 14px; font-size: 0.9em; }
+    .top-rank-card { flex-direction: column; text-align: center; padding: 20px; }
+    .top-rank-img { margin-right: 0; margin-bottom: 20px; }
+    .rank-type-tabs { width: 100%; box-sizing: border-box; justify-content: space-between; }
+    .rank-type-btn { padding: 10px 15px; flex-grow: 1; font-size: 0.9em; }
+}
+
+
+/* --- [신규] Popup Editor Styles --- */
+.popup-editor-container {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+}
+
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.toolbar-separator {
+    width: 1px;
+    height: 24px;
+    background-color: #ddd;
+    margin: 0 5px;
+}
+
+.toolbar-btn {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background-color: #fcfcfc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #333;
+    transition: all 0.2s;
+}
+.toolbar-btn:hover { background-color: #eef5ff; border-color: #007aff; color: #007aff; }
+.toolbar-btn.delete-btn:hover { background-color: #ffeef0; border-color: #ff3b30; color: #ff3b30; }
+
+.toolbar-select, .toolbar-input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 32px;
+    box-sizing: border-box;
+}
+.toolbar-input { width: 60px; }
+.toolbar-color {
+    border: none;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    background: none;
+}
+
+/* 캔버스 스타일 */
+.editor-canvas-wrapper {
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    background-color: #e0e0e0; /* 배경색으로 캔버스 구분 */
+    overflow: auto;
+}
+
+.editor-canvas {
+    width: 500px;
+    height: 500px;
+    background-color: #ffffff;
+    position: relative; /* 자식 요소 절대 위치 기준 */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+.canvas-placeholder {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ccc;
+    font-size: 1.5em;
+    font-weight: 700;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* 드래그 가능한 아이템 스타일 */
+.editor-item {
+    position: absolute;
+    cursor: move; /* 이동 커서 */
+    padding: 5px;
+    border: 2px solid transparent; /* 기본 테두리 투명 */
+    min-width: 50px;
+    min-height: 30px;
+    box-sizing: border-box;
+    transition: border-color 0.1s;
+}
+
+.editor-item.selected {
+    border-color: #007aff; /* 선택 시 파란 테두리 */
+    z-index: 100; /* 선택된 요소 맨 위로 */
+}
+
+.editor-item.text-item {
+    background: transparent;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    outline: none; /* contenteditable outline 제거 */
+}
+
+.editor-item.img-item img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none; /* 이미지 드래그 방지 (부모 div 드래그 위해) */
+}
+
+/* --- Popup Editor Styles (Updated) --- */
+/* ... (기존 스타일 유지) ... */
+
+.color-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 2px;
+    background: #fff;
+    height: 32px;
+    width: 32px;
+    cursor: pointer;
+}
+
+.editor-item {
+    position: absolute;
+    cursor: move;
+    padding: 5px;
+    border: 1px dashed transparent; /* 평소엔 투명 점선 */
+    min-width: 50px;
+    min-height: 30px;
+    box-sizing: border-box;
+    transition: border-color 0.1s;
+    
+    /* [신규] CSS 자체 크기 조절 핸들 활성화 */
+    resize: both; 
+    overflow: hidden; /* resize 핸들이 보이려면 overflow가 visible이 아니어야 함 */
+}
+
+/* 선택되었을 때 스타일 */
+.editor-item.selected {
+    border: 2px solid #007aff; /* 파란 실선 테두리 */
+    z-index: 100;
+}
+
+/* 마우스 올렸을 때 (선택 전) */
+.editor-item:hover {
+    border-color: #ccc; /* 회색 테두리 힌트 */
+}
+
+/* 텍스트 아이템 */
+.editor-item.text-item {
+    line-height: 1.4;
+    white-space: pre-wrap;
+    outline: none;
+}
+
+/* 이미지 아이템 */
+.editor-item.img-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 영역에 꽉 차게 */
+    pointer-events: none;
+}
+/* --- Popup Editor Styles (Resize Updated) --- */
+
+/* ... (기존 툴바 스타일 등은 유지) ... */
+
+.editor-item {
+    position: absolute;
+    cursor: move;
+    padding: 5px;
+    border: 1px dashed transparent; 
+    min-width: 50px;
+    min-height: 30px;
+    box-sizing: border-box;
+    transition: border-color 0.1s;
+    
+    /* [핵심] 마우스로 잡아당겨 크기 조절 가능하게 설정 */
+    resize: both; 
+    overflow: hidden; /* resize 핸들이 보이려면 overflow가 visible이 아니어야 함 */
+}
+
+/* 선택되었을 때 스타일 */
+.editor-item.selected {
+    border: 2px solid #007aff; /* 파란 실선 테두리 */
+    z-index: 100;
+}
+
+/* 마우스 올렸을 때 */
+.editor-item:hover {
+    border-color: #ccc; 
+}
+
+/* 텍스트 아이템 */
+.editor-item.text-item {
+    line-height: 1.4;
+    white-space: pre-wrap;
+    outline: none;
+    /* 텍스트 박스는 크기 조절 시 내용이 넘치지 않도록 자동 줄바꿈 */
+    word-break: break-word; 
+}
+
+/* 이미지 아이템 */
+.editor-item.img-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* 크기 조절에 따라 이미지 비율 변경 허용 */
+    pointer-events: none;
+}
+/* --- [신규] Toggle Switch Styles --- */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  vertical-align: middle;
+}
+
+.switch input { 
+  opacity: 0; 
+  width: 0; 
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc; /* 꺼졌을 때 회색 */
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider {
+  background-color: #007aff; /* 켜졌을 때 파란색 */
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #007aff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* --- [신규] 21. Autocomplete Suggestions Styles --- */
+.search-suggestions-box {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    top: 100%; /* 검색창 바로 아래 */
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: #333;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f5f5f7;
+    color: #007aff;
+    font-weight: 600;
+}
+
+/* 검색어 일치 부분 강조 (선택 사항) */
+.match-highlight {
+    color: #007aff;
+    font-weight: bold;
+}
+
+
+/* ... (이전 스타일들) ... */
+
+/* --- [신규] 22. Search Sort Buttons Styles --- */
+.search-sort-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* 모바일에서 줄바꿈 허용 */
+}
+
+.sort-btn {
+    padding: 8px 16px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 0.9em;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sort-btn:hover {
+    background-color: #f5f5f7;
+    color: #333;
+    border-color: #ccc;
+}
+
+.sort-btn.active {
+    background-color: #007aff;
+    color: white;
+    border-color: #007aff;
+    font-weight: 600;
+}
+
+
+/* --- [Add this to styles.css] Popup Overlay Styles --- */
+
+/* 1. 어두운 배경 (화면 전체 덮기) */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 검은 배경 */
+    z-index: 9999; /* 최상위 노출 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px); /* 배경 흐림 효과 (선택사항) */
+}
+
+/* 2. 팝업 박스 (흰색 상자) */
+.popup-content {
+    background: white;
+    width: 90%;
+    max-width: 500px; /* 최대 너비 */
+    height: 600px;    /* 고정 높이 (내부 스케일링 계산을 위해 필요) */
+    max-height: 80vh; /* 화면 높이의 80%를 넘지 않음 */
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column; /* 세로 배치 (콘텐츠 위, 버튼 아래) */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    overflow: hidden; /* 둥근 모서리 밖으로 나가는 내용 숨김 */
+    position: relative;
+}
+
+/* 3. 내부 콘텐츠 영역 (이미지/텍스트가 들어가는 곳) */
+#popup-inner-wrapper {
+    flex-grow: 1; /* 남은 공간 모두 차지 */
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+/* 4. 하단 버튼 영역 (여기가 없어서 버튼이 안 보였음) */
+.popup-footer {
+    height: 60px; /* 스크립트 계산식(clientHeight - 60)과 일치해야 함 */
+    min-height: 60px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 버튼 양옆 배치 */
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 10; /* 콘텐츠보다 위에 표시 */
+}
+
+/* 5. 버튼 스타일 */
+.popup-btn-today, 
+.popup-btn-close {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.popup-btn-today {
+    color: #888;
+}
+.popup-btn-today:hover {
+    background-color: #eee;
+    color: #555;
+}
+
+.popup-btn-close {
+    color: #fff;
+    background-color: #333;
+}
+.popup-btn-close:hover {
+    background-color: #000;
+}
+
+/* --- [Add this to styles.css] Site-Themed Popup Styles --- */
+
+/* 1. 팝업 배경 (세련된 블러 효과 추가) */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* 배경을 조금 더 투명하게 */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* 배경 흐림 효과로 고급스러움 추가 */
+    animation: fadeIn 0.3s ease; /* 부드럽게 나타나기 */
+}
+
+/* 2. 팝업 박스 (사이트 테마 반영) */
+.popup-content {
+    background: #ffffff;
+    width: 90%;
+    max-width: 500px;
+    height: 600px;
+    max-height: 80vh;
+    border-radius: 16px; /* 사이트의 다른 카드들과 비슷한 둥근 모서리 */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* 부드럽고 깊은 그림자 */
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #f0f0f0;
+}
+
+/* 3. 내부 콘텐츠 영역 */
+#popup-inner-wrapper {
+    flex-grow: 1;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+/* 4. 하단 버튼 영역 */
+.popup-footer {
+    height: 60px; /* 스크립트 계산 로직 유지를 위해 높이 고정 */
+    min-height: 60px;
+    background-color: #ffffff;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+/* 5. 버튼 스타일링 */
+
+/* '오늘 하루 보지 않기' - 보조적인 느낌 */
+.popup-btn-today {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #888;
+    font-weight: 500;
+    transition: all 0.2s;
+    padding: 5px 0;
+}
+.popup-btn-today:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+/* '닫기' - 사이트 메인 컬러(#007aff) 적용 */
+.popup-btn-close {
+    background-color: #007aff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 8px; /* 버튼 모서리 둥글게 */
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 122, 255, 0.2);
+}
+.popup-btn-close:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 122, 255, 0.3);
+}
+
+/* 나타나기 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- [Add this to styles.css] Footer Version Text --- */
+footer::after {
+    content: "ver-1.0_α";
+    display: block;          /* 줄바꿈을 위해 블록 요소로 설정 */
+    font-size: 0.8em;        /* 본문보다 약간 작게 */
+    margin-top: 10px;        /* 저작권 문구와의 간격 */
+    color: #ccc;             /* 은은한 회색 (기존 푸터 색상 #aaa보다 연하게) */
+    font-weight: 500;
+}
+
+/* --- [Add this to styles.css] Fixed Bottom Comment Input --- */
+
+/* 1. 댓글 입력창을 하단 고정바(Floating Bar)로 변경 */
+.comment-write-box {
+    position: fixed;        /* 화면에 고정 */
+    bottom: 30px;           /* 바닥에서 조금 띄움 */
+    left: 50%;              /* 가로 중앙 기준 */
+    transform: translateX(-50%); /* 정확한 중앙 정렬 */
+    width: 90%;             /* 모바일 대응 너비 */
+    max-width: 600px;       /* PC 최대 너비 제한 */
+    background-color: #ffffff;
+    padding: 12px 25px;
+    border-radius: 50px;    /* 둥근 캡슐 모양 */
+    box-shadow: 0 5px 25px rgba(0,0,0,0.15); /* 부드러운 그림자 */
+    border: 1px solid #e0e0e0;
+    z-index: 1000;          /* 다른 요소 위에 표시 */
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* 입력창 포커스 시 약간 강조 */
+.comment-write-box:focus-within {
+    box-shadow: 0 8px 30px rgba(0, 122, 255, 0.2);
+    border-color: #007aff;
+    bottom: 35px; /* 살짝 떠오르는 효과 */
+}
+
+/* 2. 텍스트 입력 영역 스타일 (심플하게) */
+.comment-write-box textarea {
+    flex-grow: 1;           /* 남은 공간 모두 차지 */
+    height: 24px;           /* 기본 한 줄 높이 */
+    min-height: 24px;
+    max-height: 80px;       /* 길어지면 스크롤 */
+    border: none;           /* 테두리 제거 */
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 1em;
+    resize: none;           /* 사용자 크기 조절 막기 */
+    outline: none;          /* 파란 테두리 제거 */
+    line-height: 24px;
+    font-family: inherit;
+}
+/* --- [styles.css] Fixed Bottom Comment Input with Send Icon --- */
+
+/* 1. 하단 고정 입력바 (Floating Bar) */
+.comment-write-box {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    background-color: #ffffff;
+    padding: 10px 15px 10px 25px; /* 버튼 공간 확보를 위해 오른쪽 패딩 조정 */
+    border-radius: 30px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+    border: 1px solid #e0e0e0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* 포커스 시 강조 효과 */
+.comment-write-box:focus-within {
+    box-shadow: 0 8px 30px rgba(0, 122, 255, 0.25);
+    border-color: #007aff;
+    bottom: 35px;
+}
+
+/* 2. 텍스트 입력 영역 */
+.comment-write-box textarea {
+    flex-grow: 1;
+    height: 24px;
+    min-height: 24px;
+    max-height: 80px; /* 길어지면 스크롤 */
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 1em;
+    resize: none;
+    outline: none;
+    line-height: 24px;
+    font-family: inherit;
+}
+
+/* 3. [신규] 종이비행기 전송 버튼 스타일 */
+.send-comment-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007aff; /* 파란색 */
+    padding: 8px;
+    display: flex; /* 아이콘 중앙 정렬 */
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, color 0.2s;
+    margin-left: 10px;
+    border-radius: 50%;
+}
+
+.send-comment-btn:hover {
+    background-color: #f0f8ff; /* 마우스 올리면 연한 파란 배경 */
+    transform: scale(1.1);
+    color: #0056b3;
+}
+
+.send-comment-btn:disabled {
+    color: #ccc;
+    cursor: default;
+    transform: none;
+}
+
+.send-comment-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    margin-left: 2px; /* 아이콘 시각적 위치 보정 */
+}
+
+/* 4. 하단 여백 확보 (댓글 입력창 있는 페이지) */
+.container:has(.comments-section) {
+    padding-bottom: 140px;
+}
+
+/* --- [styles.css] Reply Context Indicator & Nested Styles --- */
+
+/* 1. 대댓글 들여쓰기 스타일 */
+.comment-card.reply-item {
+    margin-left: 40px;        /* 오른쪽으로 들여쓰기 */
+    background-color: #f9f9fb;
+    border-left: 3px solid #e0e0e0;
+    margin-top: 5px;
+    font-size: 0.95em;
+}
+
+/* 2. 답글 달기 버튼 (↳ Reply) */
+/* [수정] ↳ 모양 아이콘 버튼 */
+.reply-toggle-btn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 5px 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 5px;
+    transition: color 0.2s;
+}
+
+/* 마우스 올렸을 때 */
+.reply-toggle-btn:hover {
+    color: #007aff;
+    text-decoration: underline;
+}
+
+/* ↳ 아이콘 가상 요소로 추가 (HTML에 텍스트만 있어도 됨) */
+.reply-toggle-btn::before {
+    content: "↳";
+    font-size: 1.2em;
+    font-weight: bold;
+    display: inline-block;
+    transform: translateY(-1px);
+}
+.reply-toggle-btn:hover {
+    color: #007aff;
+    text-decoration: underline;
+}
+
+/* 3. '답글 작성 중' 표시바 (입력창 위에 뜸) */
+.reply-context-bar {
+    position: fixed;
+    bottom: 85px; /* 입력창(약 50~60px) 위에 위치 */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(30, 30, 30, 0.85); /* 반투명 검정 */
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    z-index: 999;
+    display: none; /* 기본 숨김 */
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    backdrop-filter: blur(4px);
+    animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    width: auto;
+    max-width: 80%;
+}
+
+.reply-context-bar.show {
+    display: flex;
+}
+
+.reply-context-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.btn-cancel-reply-context {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.2em;
+    line-height: 1;
+}
+.btn-cancel-reply-context:hover {
+    color: #fff;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
