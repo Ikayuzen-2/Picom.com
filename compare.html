@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Parts - PiCom.com</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="Index.html" class="logo-link">
+            <img src="logo.jpg" alt="PiCom Symbol" class="logo-symbol-img">
+            <span class="logo-text">PiCom.com</span>
+        </a>
+        <div class="search-box">
+            <input type="text" placeholder="Search parts..." class="search-input">
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+            </span>
+        </div>
+        <div class="nav-links" id="mobile-menu">
+            <a href="compare.html" class="nav-item nav-item-current">Compare</a>
+            <a href="component-guide.html" class="nav-item">Component Guide</a>
+            <a href="rankings.html" class="nav-item">Rankings</a>
+            <a href="community.html" class="nav-item">Community</a>
+            <a href="admin.html" class="nav-item" id="nav-admin-link" style="display: none;">Admin</a>
+            <a href="login.html" class="nav-item login-btn" id="nav-login-link" style="display: none;">Login</a>
+            <div class="profile-container" id="nav-profile-ui">
+                <a href="profile.html" class="profile-link">
+                    <span class="profile-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                    </span>
+                    <span class="profile-nickname" id="profile-nickname-text">User</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-logout-link">Logout</a>
+            </div>
+        </div>
+        <button type="button" class="hamburger-btn" id="hamburger-btn" aria-label="Open menu">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+        </button>
+    </nav>
+
+    <div class="container compare-page">
+        <header class="compare-header">
+            <h1 class="compare-page-heading">Compare parts</h1>
+            <p class="compare-page-lead">Price, site rank, and benchmark scores in simple charts — pick up to three parts side by side.</p>
+            <p class="compare-sample-note"><span class="compare-sample-badge">Layout preview</span> Numbers below are placeholders until data is connected.</p>
+        </header>
+
+        <div class="compare-cat-tabs" role="tablist" aria-label="Component type">
+            <button type="button" class="compare-cat-tab active" disabled>CPU</button>
+            <button type="button" class="compare-cat-tab" disabled>GPU</button>
+            <button type="button" class="compare-cat-tab" disabled>RAM</button>
+            <button type="button" class="compare-cat-tab" disabled>SSD</button>
+        </div>
+
+        <section class="compare-slots" aria-label="Selected parts">
+            <article class="compare-slot compare-slot--a">
+                <div class="compare-slot-badge">A</div>
+                <h2 class="compare-slot-name">Sample CPU Alpha</h2>
+                <p class="compare-slot-spec">8 cores / 16 threads</p>
+                <button type="button" class="compare-slot-action" disabled>Choose part</button>
+            </article>
+            <article class="compare-slot compare-slot--b">
+                <div class="compare-slot-badge">B</div>
+                <h2 class="compare-slot-name">Sample CPU Beta</h2>
+                <p class="compare-slot-spec">6 cores / 12 threads</p>
+                <button type="button" class="compare-slot-action" disabled>Choose part</button>
+            </article>
+            <article class="compare-slot compare-slot--c">
+                <div class="compare-slot-badge">C</div>
+                <h2 class="compare-slot-name">Sample CPU Gamma</h2>
+                <p class="compare-slot-spec">12 cores / 24 threads</p>
+                <button type="button" class="compare-slot-action" disabled>Choose part</button>
+            </article>
+        </section>
+
+        <section class="compare-viz-section" aria-label="Comparison charts">
+            <h2 class="compare-viz-section-title">At a glance</h2>
+
+            <div class="compare-viz-grid">
+                <div class="compare-viz-card">
+                    <div class="compare-viz-card-head">
+                        <h3 class="compare-viz-title">Estimated price</h3>
+                        <p class="compare-viz-caption">Longer bar = higher price (same scale for all three)</p>
+                    </div>
+                    <div class="compare-h-bars">
+                        <div class="compare-h-bar-row">
+                            <span class="compare-h-bar-label">A</span>
+                            <div class="compare-h-bar-track"><div class="compare-h-bar-fill compare-h-bar-fill--a" style="width: 42%;"></div></div>
+                            <span class="compare-h-bar-num">$289</span>
+                        </div>
+                        <div class="compare-h-bar-row">
+                            <span class="compare-h-bar-label">B</span>
+                            <div class="compare-h-bar-track"><div class="compare-h-bar-fill compare-h-bar-fill--b" style="width: 68%;"></div></div>
+                            <span class="compare-h-bar-num">$469</span>
+                        </div>
+                        <div class="compare-h-bar-row">
+                            <span class="compare-h-bar-label">C</span>
+                            <div class="compare-h-bar-track"><div class="compare-h-bar-fill compare-h-bar-fill--c" style="width: 100%;"></div></div>
+                            <span class="compare-h-bar-num">$689</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-viz-card">
+                    <div class="compare-viz-card-head">
+                        <h3 class="compare-viz-title">Site rank</h3>
+                        <p class="compare-viz-caption">Left is better (#1). Dots show each part’s rank in this category.</p>
+                    </div>
+                    <div class="compare-rank-chart">
+                        <div class="compare-rank-ticks">
+                            <span>#1</span>
+                            <span>#5</span>
+                            <span>#10</span>
+                        </div>
+                        <div class="compare-rank-lane">
+                            <div class="compare-rank-line"></div>
+                            <div class="compare-rank-dot-wrap" style="left: 12%;"><span class="compare-rank-dot compare-rank-dot--a"></span><span class="compare-rank-tag">A · #2</span></div>
+                            <div class="compare-rank-dot-wrap" style="left: 48%;"><span class="compare-rank-dot compare-rank-dot--b"></span><span class="compare-rank-tag">B · #5</span></div>
+                            <div class="compare-rank-dot-wrap" style="left: 82%;"><span class="compare-rank-dot compare-rank-dot--c"></span><span class="compare-rank-tag">C · #8</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-viz-card compare-viz-card--wide">
+                    <div class="compare-viz-card-head">
+                        <h3 class="compare-viz-title">Benchmark score</h3>
+                        <p class="compare-viz-caption">Same test for each part — bar length = relative score</p>
+                    </div>
+                    <div class="compare-h-bars compare-h-bars--tall">
+                        <div class="compare-h-bar-row">
+                            <span class="compare-h-bar-label">A</span>
+                            <div class="compare-h-bar-track"><div class="compare-h-bar-fill compare-h-bar-fill--a" style="width: 72%;"></div></div>
+                            <span class="compare-h-bar-num">18,400</span>
+                        </div>
+                        <div class="compare-h-bar-row">
+                            <span class="compare-h-bar-label">B</span>
+                            <div class="compare-h-bar-track"><div class="compare-h-bar-fill compare-h-bar-fill--b" style="width: 55%;"></div></div>
+                            <span class="compare-h-bar-num">14,100</span>
+                        </div>
+                        <div class="compare-h-bar-row">
+                            <span class="compare-h-bar-label">C</span>
+                            <div class="compare-h-bar-track"><div class="compare-h-bar-fill compare-h-bar-fill--c" style="width: 92%;"></div></div>
+                            <span class="compare-h-bar-num">23,600</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-viz-card">
+                    <div class="compare-viz-card-head">
+                        <h3 class="compare-viz-title">Value hint</h3>
+                        <p class="compare-viz-caption">Score per dollar (higher = more performance for the money)</p>
+                    </div>
+                    <div class="compare-spark-bars">
+                        <div class="compare-spark-col">
+                            <div class="compare-spark-bar compare-spark-bar--a" style="height: 78%;"></div>
+                            <span>A</span>
+                        </div>
+                        <div class="compare-spark-col">
+                            <div class="compare-spark-bar compare-spark-bar--b" style="height: 45%;"></div>
+                            <span>B</span>
+                        </div>
+                        <div class="compare-spark-col">
+                            <div class="compare-spark-bar compare-spark-bar--c" style="height: 62%;"></div>
+                            <span>C</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 PiCom.com. All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAb74jmnCVbPFQXY7_O6dZlV5UQDYjJzvk",
+        authDomain: "picom-b7b8e.firebaseapp.com",
+        projectId: "picom-b7b8e",
+        storageBucket: "picom-b7b8e.firebasestorage.app",
+        messagingSenderId: "399167423195",
+        appId: "1:399167423195:web:b2be3394bdac5e38fb02fe"
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

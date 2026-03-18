@@ -121,14 +121,16 @@
                     
                     <form id="edit-profile-form" class="form-card profile-form">
                         <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username" required placeholder="Your display name">
+                            <label for="profile-display-name">Display name</label>
+                            <input type="text" id="profile-display-name" name="username" required maxlength="80" placeholder="Shown on posts and in the nav" autocomplete="nickname">
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required placeholder="example@piccom.com">
+                            <label for="profile-email-readonly">Email</label>
+                            <input type="email" id="profile-email-readonly" readonly aria-readonly="true" class="input-readonly">
+                            <p class="form-tags-hint">Email can’t be changed here. Use the same account you signed up with.</p>
                         </div>
-                        <button type="submit" class="form-button">Save Changes</button>
+                        <p id="edit-profile-message" class="profile-form-message" role="status" aria-live="polite"></p>
+                        <button type="submit" class="form-button" id="edit-profile-submit">Save changes</button>
                     </form>
                 </div>
 
@@ -136,20 +138,25 @@
                     <h2>Change Password</h2>
                     <p class="subtitle">Choose a new, strong password.</p>
 
+                    <div id="change-password-google-notice" class="form-card profile-form profile-notice-card" style="display: none;">
+                        <p class="profile-notice-title">Signed in with Google</p>
+                        <p class="subtitle" style="margin-bottom: 0;">Passwords are managed in your <a href="https://myaccount.google.com/security" target="_blank" rel="noopener">Google Account</a>. PiCom doesn’t store a separate password for this sign-in method.</p>
+                    </div>
                     <form id="change-password-form" class="form-card profile-form">
                         <div class="form-group">
-                            <label for="current-password">Current Password</label>
-                            <input type="password" id="current-password" name="current-password" required>
+                            <label for="current-password">Current password</label>
+                            <input type="password" id="current-password" name="current-password" required minlength="6" autocomplete="current-password">
                         </div>
                         <div class="form-group">
-                            <label for="new-password">New Password</label>
-                            <input type="password" id="new-password" name="new-password" required>
+                            <label for="new-password">New password</label>
+                            <input type="password" id="new-password" name="new-password" required minlength="6" autocomplete="new-password">
                         </div>
                         <div class="form-group">
-                            <label for="confirm-new-password">Confirm New Password</label>
-                            <input type="password" id="confirm-new-password" name="confirm-new-password" required>
+                            <label for="confirm-new-password">Confirm new password</label>
+                            <input type="password" id="confirm-new-password" name="confirm-new-password" required minlength="6" autocomplete="new-password">
                         </div>
-                        <button type="submit" class="form-button">Update Password</button>
+                        <p id="change-password-message" class="profile-form-message" role="status" aria-live="polite"></p>
+                        <button type="submit" class="form-button" id="change-password-submit">Update password</button>
                     </form>
                 </div>
 

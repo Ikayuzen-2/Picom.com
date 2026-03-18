@@ -23,11 +23,132 @@ window.showSlides = function(n) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
+    (function wrapNavAuthCluster() {
+        const menu = document.querySelector('.top-nav .nav-links#mobile-menu');
+        if (!menu || menu.dataset.authClusterWrapped === '1') return;
+        const login = document.getElementById('nav-login-link');
+        const profile = document.getElementById('nav-profile-ui');
+        if (!login || !profile || login.parentNode !== menu || profile.parentNode !== menu) return;
+        const admin = document.getElementById('nav-admin-link');
+        const cluster = document.createElement('div');
+        cluster.className = 'nav-auth-cluster nav-auth-initializing';
+        menu.dataset.authClusterWrapped = '1';
+        if (admin && admin.parentNode === menu) cluster.appendChild(admin);
+        cluster.appendChild(login);
+        cluster.appendChild(profile);
+        menu.appendChild(cluster);
+    })();
+
+    function revealNavAuthCluster() {
+        const c = document.querySelector('.nav-auth-cluster.nav-auth-initializing');
+        if (!c) return;
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                c.classList.remove('nav-auth-initializing');
+                c.classList.add('nav-auth-ready');
+            });
+        });
+    }
+
+    (function initNavSearchBar() {
+        document.querySelectorAll('.top-nav .search-box input, .top-nav input.search-input').forEach((el) => {
+            if (el.id === 'community-search-input') return;
+            el.setAttribute('autocomplete', 'off');
+            el.setAttribute('autocorrect', 'off');
+            el.setAttribute('autocapitalize', 'off');
+            el.setAttribute('spellcheck', 'false');
+            el.setAttribute('data-form-type', 'other');
+            el.value = '';
+        });
+    })();
+
+    (function initCollapsibleNavSearch() {
+        const searchSvg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>';
+
+        document.querySelectorAll('.top-nav > .search-box').forEach((box) => {
+            if (box.dataset.navSearchExpand === '1') return;
+            const input = box.querySelector('input.search-input');
+            if (!input || input.id === 'community-search-input') return;
+            box.dataset.navSearchExpand = '1';
+            box.classList.add('nav-search-expandable');
+
+            const iconEl = box.querySelector('.search-icon');
+            const svgInner = iconEl ? iconEl.innerHTML : searchSvg;
+            if (iconEl) iconEl.remove();
+
+            const panel = document.createElement('div');
+            panel.className = 'nav-search-panel';
+            panel.setAttribute('role', 'search');
+
+            const panelIcon = document.createElement('span');
+            panelIcon.className = 'nav-search-panel-icon';
+            panelIcon.innerHTML = svgInner;
+            panelIcon.setAttribute('aria-hidden', 'true');
+
+            box.insertBefore(panel, input);
+            panel.appendChild(panelIcon);
+            panel.appendChild(input);
+
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'nav-search-trigger';
+            btn.setAttribute('aria-label', 'Open search');
+            btn.setAttribute('aria-expanded', 'false');
+            btn.innerHTML = svgInner;
+            box.appendChild(btn);
+
+            function openSearch() {
+                box.classList.add('is-open');
+                btn.setAttribute('aria-expanded', 'true');
+                btn.setAttribute('aria-label', 'Close search');
+                setTimeout(() => input.focus(), 50);
+            }
+            function closeSearch() {
+                box.classList.remove('is-open');
+                btn.setAttribute('aria-expanded', 'false');
+                btn.setAttribute('aria-label', 'Open search');
+                input.blur();
+            }
+
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (box.classList.contains('is-open')) closeSearch();
+                else openSearch();
+            });
+
+            document.addEventListener('click', (e) => {
+                if (box.classList.contains('is-open') && !box.contains(e.target)) {
+                    closeSearch();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeSearch();
+            });
+        });
+    })();
+
+    function ensureNavAdminPlaceholder(navAdminLink) {
+        if (!navAdminLink || !navAdminLink.parentNode) return null;
+        let ph = document.getElementById('nav-admin-placeholder');
+        if (!ph) {
+            ph = document.createElement('span');
+            ph.id = 'nav-admin-placeholder';
+            ph.className = 'nav-admin-placeholder';
+            ph.setAttribute('aria-hidden', 'true');
+            ph.innerHTML = '<span class="nav-admin-placeholder-text">Admin</span>';
+            navAdminLink.parentNode.insertBefore(ph, navAdminLink);
+        }
+        return ph;
+    }
+
     // Component Guide 링크 강제 연결
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
-        if (item.textContent.trim() === 'Component Guide') {
+        const label = item.textContent.trim();
+        if (label === 'Component Guide') {
             item.href = 'component-guide.html';
             item.addEventListener('click', (e) => {
                 const currentHref = item.getAttribute('href');
@@ -36,6 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = 'component-guide.html';
                 }
             });
+        }
+        if (label === 'Compare') {
+            item.href = 'compare.html';
         }
     });
 
@@ -84,7 +208,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } catch (e) {
         console.error("Firebase initialization failed!", e);
-        return; 
+        document.querySelectorAll('.nav-auth-cluster.nav-auth-initializing').forEach((c) => {
+            c.classList.remove('nav-auth-initializing');
+            c.classList.add('nav-auth-ready');
+        });
+        return;
     }
     
     // --- 2. Auth State Listener ---
@@ -107,41 +235,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isLoggedIn) {
             if (navLoginLink) navLoginLink.style.display = 'none';
-            if (navProfileUI) navProfileUI.style.display = 'flex'; 
-            if (navLogoutLink) navLogoutLink.style.display = 'block'; 
-            
+            if (navProfileUI) navProfileUI.style.display = 'flex';
+            if (navLogoutLink) navLogoutLink.style.display = 'block';
+
             const nicknameElement = document.getElementById('profile-nickname-text');
             if (nicknameElement) {
                 nicknameElement.textContent = user.displayName || (user.email ? user.email.split('@')[0] : 'User');
             }
-            
+
+            const adminPh = navAdminLink ? ensureNavAdminPlaceholder(navAdminLink) : null;
+            if (navAdminLink) {
+                navAdminLink.style.display = 'none';
+                navAdminLink.style.visibility = 'visible';
+            }
+            if (adminPh) adminPh.style.display = 'inline-flex';
+
+            revealNavAuthCluster();
+
             db.collection("roles").doc("admin_users").get()
                 .then(doc => {
                     currentUserIsAdmin = doc.exists && doc.data().uids && doc.data().uids.includes(user.uid);
                 })
-                .catch(error => {
+                .catch(() => {
                     currentUserIsAdmin = false;
                 })
                 .finally(() => {
                     if (adminOption) adminOption.style.display = currentUserIsAdmin ? 'block' : 'none';
-                    if (navAdminLink) navAdminLink.style.display = currentUserIsAdmin ? 'block' : 'none'; 
-                    initPage(user); 
+                    if (navAdminLink && adminPh) {
+                        if (currentUserIsAdmin) {
+                            navAdminLink.style.display = 'inline-flex';
+                            adminPh.style.display = 'none';
+                        } else {
+                            navAdminLink.style.display = 'none';
+                            adminPh.style.display = 'inline-flex';
+                        }
+                    }
+                    initPage(user);
                 });
         } else {
-            if (navLoginLink) navLoginLink.style.display = 'inline-flex'; 
+            if (navLoginLink) navLoginLink.style.display = 'inline-flex';
             if (navProfileUI) navProfileUI.style.display = 'none';
             if (navLogoutLink) navLogoutLink.style.display = 'none';
             if (adminOption) adminOption.style.display = 'none';
-            if (navAdminLink) navAdminLink.style.display = 'none'; 
-            currentUserIsAdmin = false; 
-            
+            if (navAdminLink) navAdminLink.style.display = 'none';
+            const adminPh = document.getElementById('nav-admin-placeholder');
+            if (adminPh) adminPh.style.display = 'none';
+            currentUserIsAdmin = false;
+
+            revealNavAuthCluster();
+
             if (isProtectedPage) {
                 alert('You must be logged in to access this page.');
                 window.location.href = 'login.html';
-                return; 
-            } else {
-                 initPage(null);
+                return;
             }
+            initPage(null);
         }
     });
     
@@ -511,7 +659,168 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        setupProfileAccountForms(user);
+
     } // End of runPageSpecificScripts
+
+    function setupProfileAccountForms(user) {
+        const editForm = document.getElementById('edit-profile-form');
+        const displayNameInput = document.getElementById('profile-display-name');
+        const emailReadonly = document.getElementById('profile-email-readonly');
+        const editMsg = document.getElementById('edit-profile-message');
+        const pwdForm = document.getElementById('change-password-form');
+        const googleNotice = document.getElementById('change-password-google-notice');
+        const pwdMsg = document.getElementById('change-password-message');
+
+        if (!user) return;
+
+        if (editForm && displayNameInput && emailReadonly) {
+            displayNameInput.value = user.displayName || '';
+            emailReadonly.value = user.email || '';
+
+            editForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = displayNameInput.value.trim();
+                if (!name) {
+                    if (editMsg) {
+                        editMsg.textContent = 'Please enter a display name.';
+                        editMsg.classList.add('is-error');
+                    } else {
+                        alert('Please enter a display name.');
+                    }
+                    return;
+                }
+                if (name.length > 80) {
+                    if (editMsg) {
+                        editMsg.textContent = 'Display name must be 80 characters or less.';
+                        editMsg.classList.add('is-error');
+                    }
+                    return;
+                }
+                const submitBtn = document.getElementById('edit-profile-submit');
+                if (editMsg) {
+                    editMsg.textContent = '';
+                    editMsg.classList.remove('is-error', 'is-success');
+                }
+                if (submitBtn) submitBtn.disabled = true;
+
+                user.updateProfile({ displayName: name })
+                    .then(() => {
+                        const navNick = document.getElementById('profile-nickname-text');
+                        if (navNick) navNick.textContent = name;
+                        if (editMsg) {
+                            editMsg.textContent = 'Display name saved. New posts will use this name; older posts keep the name from when they were written.';
+                            editMsg.classList.add('is-success');
+                        } else {
+                            alert('Display name saved.');
+                        }
+                    })
+                    .catch((err) => {
+                        const t = err.message || 'Could not update profile.';
+                        if (editMsg) {
+                            editMsg.textContent = t;
+                            editMsg.classList.add('is-error');
+                        } else {
+                            alert(t);
+                        }
+                    })
+                    .finally(() => {
+                        if (submitBtn) submitBtn.disabled = false;
+                    });
+            });
+        }
+
+        const hasEmailPassword = user.providerData && user.providerData.some((p) => p.providerId === 'password');
+
+        if (pwdForm && googleNotice) {
+            if (!hasEmailPassword) {
+                pwdForm.style.display = 'none';
+                googleNotice.style.display = 'block';
+            } else {
+                googleNotice.style.display = 'none';
+                pwdForm.style.display = 'block';
+                pwdForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const current = document.getElementById('current-password').value;
+                    const next = document.getElementById('new-password').value;
+                    const confirm = document.getElementById('confirm-new-password').value;
+
+                    if (pwdMsg) {
+                        pwdMsg.textContent = '';
+                        pwdMsg.classList.remove('is-error', 'is-success');
+                    }
+
+                    if (next.length < 6) {
+                        if (pwdMsg) {
+                            pwdMsg.textContent = 'New password must be at least 6 characters.';
+                            pwdMsg.classList.add('is-error');
+                        }
+                        return;
+                    }
+                    if (next !== confirm) {
+                        if (pwdMsg) {
+                            pwdMsg.textContent = 'New passwords do not match.';
+                            pwdMsg.classList.add('is-error');
+                        }
+                        return;
+                    }
+                    if (next === current) {
+                        if (pwdMsg) {
+                            pwdMsg.textContent = 'Choose a different password than your current one.';
+                            pwdMsg.classList.add('is-error');
+                        }
+                        return;
+                    }
+
+                    const email = user.email;
+                    if (!email) {
+                        if (pwdMsg) {
+                            pwdMsg.textContent = 'No email on file for this account.';
+                            pwdMsg.classList.add('is-error');
+                        }
+                        return;
+                    }
+
+                    const submitBtn = document.getElementById('change-password-submit');
+                    if (submitBtn) submitBtn.disabled = true;
+
+                    const credential = firebase.auth.EmailAuthProvider.credential(email, current);
+                    user.reauthenticateWithCredential(credential)
+                        .then(() => user.updatePassword(next))
+                        .then(() => {
+                            document.getElementById('current-password').value = '';
+                            document.getElementById('new-password').value = '';
+                            document.getElementById('confirm-new-password').value = '';
+                            if (pwdMsg) {
+                                pwdMsg.textContent = 'Password updated successfully.';
+                                pwdMsg.classList.add('is-success');
+                            } else {
+                                alert('Password updated successfully.');
+                            }
+                        })
+                        .catch((err) => {
+                            let t = err.message || 'Could not update password.';
+                            if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+                                t = 'Current password is incorrect.';
+                            } else if (err.code === 'auth/weak-password') {
+                                t = 'Password is too weak. Use a stronger password.';
+                            } else if (err.code === 'auth/requires-recent-login') {
+                                t = 'Please log out and log in again, then try changing your password.';
+                            }
+                            if (pwdMsg) {
+                                pwdMsg.textContent = t;
+                                pwdMsg.classList.add('is-error');
+                            } else {
+                                alert(t);
+                            }
+                        })
+                        .finally(() => {
+                            if (submitBtn) submitBtn.disabled = false;
+                        });
+                });
+            }
+        }
+    }
 
     // --- 5. Helper Functions ---
     function submitPostToFirestore(imageUrl, postData, user, isEditMode, postId) {
@@ -1670,199 +1979,187 @@ function renderCommentItem(container, comment, postId, currentUser, isReply, pos
 
     function setupAdminPopupManager() {
         const database = (typeof db !== 'undefined') ? db : firebase.firestore();
-        const popupCollection = database.collection('saved_popups'); 
+        const popupCollection = database.collection('saved_popups');
         const storageRef = (typeof storage !== 'undefined') ? storage : firebase.storage();
 
         const menuAll = document.getElementById('menu-popup-all');
         const menuMake = document.getElementById('menu-popup-make');
         const menuPost = document.getElementById('menu-popup-post');
-        
+
         const viewAll = document.getElementById('view-popup-all');
         const viewMake = document.getElementById('view-popup-make');
         const viewPost = document.getElementById('view-popup-post');
 
+        const linkInput = document.getElementById('popup-link-url');
+        const dropzone = document.getElementById('popup-image-dropzone');
+        const fileInput = document.getElementById('popup-single-image-input');
+        const imgPreview = document.getElementById('popup-image-preview');
+        const imgPlaceholder = document.getElementById('popup-image-placeholder');
+        const btnRemoveImg = document.getElementById('popup-remove-image-btn');
+        const uploadStatus = document.getElementById('popup-upload-status');
+        const btnSave = document.getElementById('btn-save-popup');
+
+        let currentImageUrl = null;
+
+        function setUploadStatus(msg, isError) {
+            if (!uploadStatus) return;
+            if (!msg) {
+                uploadStatus.style.display = 'none';
+                uploadStatus.textContent = '';
+                return;
+            }
+            uploadStatus.style.display = 'block';
+            uploadStatus.textContent = msg;
+            uploadStatus.style.color = isError ? '#c00' : '#666';
+        }
+
+        function showImagePreview(url) {
+            currentImageUrl = url;
+            if (imgPreview) {
+                imgPreview.src = url;
+                imgPreview.style.display = 'block';
+            }
+            if (imgPlaceholder) imgPlaceholder.style.display = 'none';
+            if (btnRemoveImg) btnRemoveImg.style.display = 'inline-block';
+            setUploadStatus('');
+        }
+
+        function resetPopupImageForm() {
+            currentImageUrl = null;
+            if (imgPreview) {
+                imgPreview.src = '';
+                imgPreview.style.display = 'none';
+            }
+            if (imgPlaceholder) imgPlaceholder.style.display = 'flex';
+            if (btnRemoveImg) btnRemoveImg.style.display = 'none';
+            if (fileInput) fileInput.value = '';
+            if (linkInput) linkInput.value = '';
+            setUploadStatus('');
+        }
+
         function switchView(targetView) {
             [viewAll, viewMake, viewPost].forEach(el => {
-                if(el) el.style.display = 'none';
+                if (el) el.style.display = 'none';
             });
-            if(targetView) targetView.style.display = 'block';
+            if (targetView) targetView.style.display = 'block';
 
             if (targetView === viewAll) {
                 renderSavedPopups();
             }
             if (targetView === viewPost) {
-                renderPostPopups(); 
+                renderPostPopups();
             }
         }
 
         if (menuAll) menuAll.addEventListener('click', () => switchView(viewAll));
-        if (menuMake) menuMake.addEventListener('click', () => switchView(viewMake));
+        if (menuMake) menuMake.addEventListener('click', () => {
+            resetPopupImageForm();
+            switchView(viewMake);
+        });
         if (menuPost) menuPost.addEventListener('click', () => switchView(viewPost));
 
         switchView(viewMake);
 
-        const canvas = document.getElementById('popup-canvas');
-        const btnAddText = document.getElementById('btn-add-text');
-        const imgInput = document.getElementById('img-upload-input');
-        const btnDelete = document.getElementById('btn-delete-item');
-        const btnClear = document.getElementById('btn-editor-clear');
-        const btnSave = document.getElementById('btn-save-canvas');
-        const linkInput = document.getElementById('popup-link-url'); 
-        
-        const fontFamily = document.getElementById('font-family-select');
-        const fontSize = document.getElementById('font-size-input');
-        const fontColor = document.getElementById('font-color-input');
-        const bgColor = document.getElementById('bg-color-input');
+        const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
-        let selectedElement = null;
-        let isDragging = false;
-        let startX, startY, initialLeft, initialTop;
-
-        if (btnAddText) {
-            btnAddText.addEventListener('click', () => {
-                const textDiv = document.createElement('div');
-                textDiv.className = 'editor-item text-item';
-                textDiv.contentEditable = true;
-                textDiv.textContent = 'Text';
-                Object.assign(textDiv.style, {
-                    left: '50px', top: '50px', width: '120px', height: 'auto',
-                    fontSize: '20px', color: '#000000', fontFamily: 'Arial, sans-serif',
-                    padding: '5px'
-                });
-                canvas.appendChild(textDiv);
-                selectItem(textDiv);
-                hidePlaceholder();
-            });
-        }
-
-        if (imgInput) {
-            imgInput.addEventListener('change', (e) => {
-                if (e.target.files && e.target.files[0]) {
-                    const file = e.target.files[0];
-                    const uploadPath = `popup_images/${Date.now()}_${file.name}`;
-                    const uploadTask = storageRef.ref(uploadPath).put(file);
-
-                    uploadTask.then(snapshot => snapshot.ref.getDownloadURL())
-                        .then(url => {
-                            const imgDiv = document.createElement('div');
-                            imgDiv.className = 'editor-item img-item';
-                            Object.assign(imgDiv.style, {
-                                left: '50px', top: '50px', width: '150px', height: '150px'
-                            });
-                            
-                            const img = document.createElement('img');
-                            img.src = url; 
-                            imgDiv.appendChild(img);
-                            
-                            canvas.appendChild(imgDiv);
-                            selectItem(imgDiv);
-                            hidePlaceholder();
-                            e.target.value = '';
-                        })
-                        .catch(err => {
-                            console.error("Image upload failed:", err);
-                            alert("Image upload failed. Check Storage Rules.");
-                        });
-                }
-            });
-        }
-
-        canvas.addEventListener('mousedown', (e) => {
-            const target = e.target.closest('.editor-item');
-            if (!target) {
-                if (selectedElement) selectedElement.classList.remove('selected');
-                selectedElement = null;
+        function uploadPopupImage(file) {
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                alert('Please use JPG, PNG, GIF, or WebP only.');
                 return;
             }
-            selectItem(target);
+            setUploadStatus('Uploading…');
+            const safeName = file.name.replace(/[^\w.\-]/g, '_');
+            const uploadPath = `popup_images/${Date.now()}_${safeName}`;
+            storageRef.ref(uploadPath).put(file)
+                .then(snapshot => snapshot.ref.getDownloadURL())
+                .then(url => {
+                    showImagePreview(url);
+                })
+                .catch(err => {
+                    console.error('Image upload failed:', err);
+                    setUploadStatus('Upload failed. Check Storage rules.', true);
+                    alert('Image upload failed. Check Storage rules.');
+                });
+        }
 
-            const rect = target.getBoundingClientRect();
-            const isResizing = (e.clientX > rect.right - 15 && e.clientY > rect.bottom - 15);
-            if (isResizing) return; 
-
-            if (target.classList.contains('text-item') && document.activeElement === target) return;
-
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            initialLeft = target.offsetLeft;
-            initialTop = target.offsetTop;
-        });
-
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging || !selectedElement) return;
-            e.preventDefault(); 
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            selectedElement.style.left = `${initialLeft + dx}px`;
-            selectedElement.style.top = `${initialTop + dy}px`;
-        });
-
-        window.addEventListener('mouseup', () => { isDragging = false; });
-
-        const updateStyle = (styleProp, value, isPixel = false) => {
-            if (selectedElement) selectedElement.style[styleProp] = isPixel ? value + 'px' : value;
-        };
-        fontFamily.addEventListener('change', () => updateStyle('fontFamily', fontFamily.value));
-        fontSize.addEventListener('input', () => updateStyle('fontSize', fontSize.value, true));
-        fontColor.addEventListener('input', () => updateStyle('color', fontColor.value));
-        bgColor.addEventListener('input', () => updateStyle('backgroundColor', bgColor.value));
-
-        btnDelete.addEventListener('click', () => {
-            if (selectedElement && confirm("Delete selected item?")) {
-                selectedElement.remove();
-                selectedElement = null;
-            }
-        });
-
-        if (btnClear) {
-            btnClear.addEventListener('click', () => {
-                if (confirm("Clear all items on the canvas?")) {
-                    canvas.innerHTML = '<div class="canvas-placeholder">Drag & Drop Area</div>';
-                    selectedElement = null;
+        if (dropzone && fileInput) {
+            dropzone.addEventListener('click', (e) => {
+                if (e.target === btnRemoveImg || btnRemoveImg && btnRemoveImg.contains(e.target)) return;
+                fileInput.click();
+            });
+            dropzone.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    fileInput.click();
                 }
+            });
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.classList.add('popup-dropzone-active');
+            });
+            dropzone.addEventListener('dragleave', () => dropzone.classList.remove('popup-dropzone-active'));
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('popup-dropzone-active');
+                const f = e.dataTransfer.files && e.dataTransfer.files[0];
+                if (f) uploadPopupImage(f);
+            });
+            fileInput.addEventListener('change', (e) => {
+                const f = e.target.files && e.target.files[0];
+                if (f) uploadPopupImage(f);
+                e.target.value = '';
             });
         }
 
-        btnSave.addEventListener('click', () => {
-            const title = prompt("Enter a title for this popup:");
-            if (title) {
-                if (selectedElement) selectedElement.classList.remove('selected');
-                
+        if (btnRemoveImg) {
+            btnRemoveImg.addEventListener('click', (e) => {
+                e.stopPropagation();
+                resetPopupImageForm();
+            });
+        }
+
+        if (btnSave) {
+            btnSave.addEventListener('click', () => {
+                if (!currentImageUrl) {
+                    alert('Please upload an image first.');
+                    return;
+                }
+                const title = prompt('Name this popup (for your list only):');
+                if (!title || !title.trim()) return;
+
                 const popupData = {
-                    title: title,
-                    contentHtml: canvas.innerHTML, 
-                    linkUrl: linkInput ? linkInput.value : '', 
+                    title: title.trim(),
+                    imageUrl: currentImageUrl,
+                    linkUrl: linkInput ? (linkInput.value || '').trim() : '',
+                    contentHtml: '',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 };
 
-                btnSave.textContent = "Saving...";
+                btnSave.textContent = 'Saving…';
                 btnSave.disabled = true;
 
                 popupCollection.add(popupData)
                     .then(() => {
-                        alert(`Popup "${title}" saved successfully!`);
-                        btnSave.textContent = "💾 Save";
+                        alert(`Popup "${title.trim()}" saved.`);
+                        btnSave.textContent = 'Save popup';
                         btnSave.disabled = false;
-
                         popupPaginationState.saved.loaded = false;
                         popupPaginationState.saved.page = 1;
                         popupPaginationState.saved.allDocs = [];
-
                         popupPaginationState.post.loaded = false;
                         popupPaginationState.post.page = 1;
                         popupPaginationState.post.allDocs = [];
-
+                        resetPopupImageForm();
                         switchView(viewAll);
                     })
                     .catch((error) => {
-                        console.error("Error saving popup:", error);
-                        alert("Error saving: " + error.message);
-                        btnSave.textContent = "💾 Save";
+                        console.error('Error saving popup:', error);
+                        alert('Error saving: ' + error.message);
+                        btnSave.textContent = 'Save popup';
                         btnSave.disabled = false;
                     });
-            }
-        });
+            });
+        }
 
         const btnBackToList = document.getElementById('btn-back-to-popup-list');
         if (btnBackToList) {
@@ -1908,7 +2205,7 @@ function renderCommentItem(container, comment, postId, currentUser, isReply, pos
 
                 container.innerHTML = '';
                 if (state.totalDocs === 0) {
-                    container.innerHTML = '<p style="text-align: center; color: #888; padding: 40px;">No popups saved yet. Go to "Make Your Popup" to create one.</p>';
+                    container.innerHTML = '<p style="text-align: center; color: #888; padding: 40px;">No popups yet. Use <strong>New popup (image)</strong> to upload one.</p>';
                     return;
                 }
 
@@ -1918,6 +2215,7 @@ function renderCommentItem(container, comment, postId, currentUser, isReply, pos
                             <tr>
                                 <th>Date</th>
                                 <th>Title</th>
+                                <th>Image</th>
                                 <th>Link</th>
                                 <th>Action</th>
                             </tr>
@@ -1929,15 +2227,19 @@ function renderCommentItem(container, comment, postId, currentUser, isReply, pos
                     const popup = doc.data();
                     const popupId = doc.id;
                     const date = popup.createdAt ? new Date(popup.createdAt.seconds * 1000).toLocaleString() : 'Just now';
-                    const linkTxt = popup.linkUrl ? `<a href="${popup.linkUrl}" target="_blank">🔗 Link</a>` : '-';
+                    const linkTxt = popup.linkUrl ? `<a href="${popup.linkUrl}" target="_blank">Link</a>` : '—';
+                    const thumb = popup.imageUrl
+                        ? `<img src="${popup.imageUrl}" alt="" class="popup-admin-thumb" width="56" height="56" style="object-fit:cover;border-radius:8px;vertical-align:middle;">`
+                        : (popup.contentHtml ? '<span style="color:#999;font-size:0.85em;">Legacy</span>' : '—');
 
                     html += `
                         <tr>
                             <td>${date}</td>
                             <td style="font-weight:600;">${popup.title}</td>
+                            <td>${thumb}</td>
                             <td>${linkTxt}</td>
                             <td>
-                                <span class="view-popup-btn" data-id="${popupId}" style="color:#007aff; cursor:pointer; margin-right:10px;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">View Layout</span>
+                                <span class="view-popup-btn" data-id="${popupId}" style="color:#007aff; cursor:pointer; margin-right:10px;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Preview</span>
                                 <button class="form-button delete-popup-btn" data-id="${popupId}" style="width:auto; padding:5px 10px; font-size:0.9em; background-color:#ff3b30;">Delete</button>
                             </td>
                         </tr>
@@ -1949,7 +2251,7 @@ function renderCommentItem(container, comment, postId, currentUser, isReply, pos
 
                 renderPaginationControls(container, state, 'saved');
 
-                attachPopupListListeners(popupCollection, canvas, viewMake);
+                attachPopupListListeners(popupCollection, viewMake);
             })
             .catch((error) => {
                 console.error("Error loading popups: ", error);
@@ -2066,7 +2368,8 @@ function renderCommentItem(container, comment, postId, currentUser, isReply, pos
                         const queueItem = {
                             sourceId: id,
                             title: popupData.title,
-                            contentHtml: popupData.contentHtml,
+                            contentHtml: popupData.contentHtml || '',
+                            imageUrl: popupData.imageUrl || '',
                             linkUrl: popupData.linkUrl || ''
                         };
 
@@ -2159,19 +2462,22 @@ function renderCommentItem(container, comment, postId, currentUser, isReply, pos
             });
         }
 
-        function attachPopupListListeners(collection, canvas, viewMake) {
-            // View Layout
+        function attachPopupListListeners(collection, viewMake) {
             document.querySelectorAll('.view-popup-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const id = e.target.dataset.id;
-                    collection.doc(id).get().then((doc) => {
-                        if (doc.exists) {
-                            const data = doc.data();
-                            canvas.innerHTML = data.contentHtml;
-                            if(linkInput) linkInput.value = data.linkUrl || '';
-                            selectedElement = null;
-                            switchView(viewMake);
-                            alert(`Loaded layout for "${data.title}"`);
+                    collection.doc(id).get().then((docSnap) => {
+                        if (docSnap.exists) {
+                            const data = docSnap.data();
+                            if (data.imageUrl) {
+                                showImagePreview(data.imageUrl);
+                                if (linkInput) linkInput.value = data.linkUrl || '';
+                                switchView(viewMake);
+                            } else if (data.contentHtml) {
+                                alert('This popup was made with the old editor. It still works on the site; create a new image popup to edit visually.');
+                            } else {
+                                alert('No image on this record.');
+                            }
                         }
                     });
                 });
@@ -2214,21 +2520,6 @@ function renderCommentItem(container, comment, postId, currentUser, isReply, pos
                     });
                 });
             });
-        }
-
-        // Helper
-        function selectItem(element) {
-            if (selectedElement) selectedElement.classList.remove('selected');
-            selectedElement = element;
-            selectedElement.classList.add('selected');
-            if (element.classList.contains('text-item') && element.style.fontSize) {
-                fontSize.value = parseInt(element.style.fontSize);
-            }
-        }
-
-        function hidePlaceholder() {
-            const ph = canvas.querySelector('.canvas-placeholder');
-            if (ph) ph.style.display = 'none';
         }
     }
 
@@ -2287,51 +2578,64 @@ function renderCommentItem(container, comment, postId, currentUser, isReply, pos
         closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
         todayBtn.parentNode.replaceChild(newTodayBtn, todayBtn);
 
-        // 컨텐츠 주입 (스케일링 적용)
-        if (data.contentHtml) {
-            let contentHTML = `<div id="scale-target" style="position:absolute; width:500px; height:500px; left:50%; top:50%; transform:translate(-50%, -50%); transform-origin: center center; overflow:hidden; background:white;">${data.contentHtml}</div>`;
-            
-            if (data.linkUrl) {
-                popupInner.innerHTML = `<a href="${data.linkUrl}" target="_blank" style="display:block; width:100%; height:100%; position:relative; text-decoration:none; color:inherit; cursor:pointer;">${contentHTML}</a>`;
+        // 이미지 전용 팝업 또는 (구버전) HTML 레이아웃
+        const hasImage = data.imageUrl && String(data.imageUrl).trim();
+        const hasLegacyHtml = data.contentHtml && String(data.contentHtml).trim();
+
+        if (hasImage || hasLegacyHtml) {
+            let innerBox;
+            if (hasImage) {
+                innerBox = document.createElement('div');
+                innerBox.id = 'scale-target';
+                innerBox.style.cssText = 'position:absolute;width:500px;height:500px;left:50%;top:50%;transform:translate(-50%,-50%);transform-origin:center center;overflow:hidden;background:#f5f5f7;display:flex;align-items:center;justify-content:center;border-radius:12px;';
+                const im = document.createElement('img');
+                im.alt = '';
+                im.style.cssText = 'max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;';
+                im.src = data.imageUrl;
+                innerBox.appendChild(im);
             } else {
-                popupInner.innerHTML = contentHTML;
+                const wrap = document.createElement('div');
+                wrap.id = 'scale-target';
+                wrap.style.cssText = 'position:absolute;width:500px;height:500px;left:50%;top:50%;transform:translate(-50%,-50%);transform-origin:center center;overflow:hidden;background:white;';
+                wrap.innerHTML = data.contentHtml;
+                innerBox = wrap;
             }
 
-            // 편집 속성 제거
-            const editorItems = popupInner.querySelectorAll('.editor-item');
-            editorItems.forEach(item => {
-                item.removeAttribute('contenteditable');
-                item.style.resize = 'none';
-                item.style.border = 'none';
-                item.classList.remove('selected');
-                
-                // 링크가 있으면 포인터 커서 유지
-                if (data.linkUrl) {
-                    item.style.cursor = 'pointer'; 
-                } else {
-                    item.style.cursor = 'default';
-                }
-            });
+            popupInner.innerHTML = '';
+            if (data.linkUrl && String(data.linkUrl).trim()) {
+                const a = document.createElement('a');
+                a.href = data.linkUrl;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.style.cssText = 'display:block;width:100%;height:100%;position:relative;text-decoration:none;color:inherit;cursor:pointer;';
+                a.appendChild(innerBox);
+                popupInner.appendChild(a);
+            } else {
+                popupInner.appendChild(innerBox);
+            }
 
-            // 스케일링 함수
+            if (hasLegacyHtml && !hasImage) {
+                popupInner.querySelectorAll('.editor-item').forEach(item => {
+                    item.removeAttribute('contenteditable');
+                    item.style.resize = 'none';
+                    item.style.border = 'none';
+                    item.classList.remove('selected');
+                    item.style.cursor = data.linkUrl ? 'pointer' : 'default';
+                });
+            }
+
             const scaleContent = () => {
                 const target = document.getElementById('scale-target');
                 if (!target) return;
                 const availableWidth = popupContent.clientWidth;
-                const availableHeight = popupContent.clientHeight - 60; // footer space
-                
-                // 0으로 나뉘거나 계산 오류 방지
+                const availableHeight = popupContent.clientHeight - 60;
                 if (availableWidth <= 0 || availableHeight <= 0) {
-                    // 아직 렌더링 안됐으면 잠시 후 재시도
-                    setTimeout(scaleContent, 50); 
+                    setTimeout(scaleContent, 50);
                     return;
                 }
-
                 const scale = Math.min(availableWidth, availableHeight) / 500;
                 target.style.transform = `translate(-50%, -50%) scale(${scale})`;
             };
-            
-            // 즉시 실행 및 리사이즈 이벤트 등록
             scaleContent();
             window.addEventListener('resize', scaleContent);
         }
